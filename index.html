@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- css -->
+    <link rel="stylesheet" href="./src/css/styles.css" />
+    <link rel="stylesheet" href="./src/css/main.css" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" href="./src/img/restaurant.png" />
+    <title>Resturant</title>
+  </head>
+  <body>
+    <!-- header -->
+    <header class="header">
+      <!-- NavBar -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="./"
+            ><i class="fas fa-utensils fa-2x"></i
+          ></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#header-navbar"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse ml-auto" id="header-navbar">
+            <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#cuisines">Our Cuisines</a>
+              </li>
+              <li class="nav-item signin-icon">
+                <a class="nav-link" href="#" id="signin"> Sign in </a>
+              </li>
+              <li class="nav-item signup-icon">
+                <a class="nav-link signup" href="#" id="signup"> Sign up </a>
+              </li>
+
+              <!-- dropdown -->
+              <li class="nav-item user-icon hidden">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-user"></i>
+                  </button>
+                  <ul
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton1"
+                  >
+                    <li>
+                      <button
+                        id="cart-open"
+                        type="button"
+                        class="btn btn-primary dropdown-item"
+                        data-bs-toggle="modal"
+                        data-bs-target="#cartModal"
+                      >
+                        <i class="fas fa-cart-arrow-down"></i> Cart
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        class="btn btn-primary dropdown-item favorite-open"
+                        data-bs-toggle="modal"
+                        data-bs-target="#favouriteModal"
+                      >
+                        <i class="fas fa-heart"></i> Favourite
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        class="btn btn-primary dropdown-item"
+                        id="orderBtn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#orderModal"
+                      >
+                        <i class="fas fa-hamburger"></i> Orders
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        id="profileBtn"
+                        type="button"
+                        class="btn btn-primary dropdown-item"
+                      >
+                        <i class="fas fa-user-circle"></i> Profile
+                      </button>
+                    </li>
+                    <li class="signoutBtnContainer">
+                      <button
+                        id="signoutBtn"
+                        type="button"
+                        class="btn btn-primary"
+                      >
+                        Sign Out
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- main -->
+    <main class="main">
+      <div class="container">
+
+        <!-- search section -->
+        <div class="search">
+          <div class="search__form">
+            <input type="search" name="search" class="search__field" autocomplete="off" placeholder="search about recipe">
+            <button class="search__btn" type="submit"> <i class="fas fa-search"></i></button>
+          </div>          
+          <div class="row search__results">
+          </div>
+        </div>
+
+        <!-- Our Popular Food -->
+        <h3 class="popular-header">Our Popular Food</h3>
+        <div class="row popular"></div>
+
+        <!-- Our Cuisines -->
+
+        <h3 class="cuisines-header" id="cuisines">Our Cuisines</h3>
+
+        <div class="row cuisines">
+          <!-- categories -->
+          <div class="col-12 categories"></div>
+          <!-- End categories -->
+          <!-- recipes -->
+          <div class="col-12 recipes">
+            <div class="row recipes-container"></div>
+            <div class="row pages">
+                <button class="pages__btn--prev">prev</button>
+                <button class="pages__btn--next">next</button>
+            </div>
+          </div>
+        </div>
+        <div class="recipe hidden"></div>
+        <!-- End recipes -->
+
+        <!-- End Cuisines -->
+
+        
+        <!-- Mobile App -->
+
+        <div class="row mobile">
+          <div class="col-sm-12 col-md-6 mobile-info">
+            <div>
+              <h3>Download Our Mobile App</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Laboriosam saepe repellat corrupti quasi, iusto quod blanditiis
+                vitae dolorem asperiores dignissimos natus laudantium odit
+                cupiditate assumenda minus? Natus non nobis culpa?
+              </p>
+              <button class="btn btn-dark btn-lg">
+                <i class="fab fa-android"></i> Download
+              </button>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 app-container">
+            <img
+              src="./src/img/smartmockups_ktaamfst.jpg"
+              alt="app photo"
+              class="app-photo"
+            />
+          </div>
+
+          <!-- End Mobile App -->
+        </div>
+
+        <!-- End Container -->
+      </div>
+
+
+      <!-- Modals -->
+
+      <!--Cart Modal -->
+      <div
+        class="modal fade"
+        id="cartModal"
+        tabindex="-1"
+        aria-labelledby="cartModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="cartModalLabel">Cart</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <ul class="cart-items"></ul>
+            </div>
+            <div class="modal-footer">
+              <div class="total-salary">Total Salary: <span>0$</span></div>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="orderNow"
+                  data-bs-dismiss="modal"
+                >
+                  Order Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Cart Modal -->
+
+      <!--favourite Modal -->
+      <div
+        class="modal fade"
+        id="favouriteModal"
+        tabindex="-1"
+        aria-labelledby="favouriteModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Favourite</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <ul class="favorite-items"></ul>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Favourite Modal -->
+
+      <!-- order List Modal -->
+      <div
+        class="modal fade"
+        id="orderModal"
+        tabindex="-1"
+        aria-labelledby="orderModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="orderModalLabel">Orders</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary close"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End order List modal -->
+      <!-- form model -->
+      <!-- Sign Up Modal -->
+      <div class="form__container" id="signup-modal">
+        <div class="form__modal">
+          <button class="close-btn" id="close">
+            <i class="fa fa-times"></i>
+          </button>
+          <div class="modal__form__header">
+            <h3>Sign Up</h3>
+          </div>
+          <div class="modal__form__content">
+            <!-- <p>Put you data to sign up </p> -->
+            <div class="modal__form">
+              <div class="signup-error"></div>
+              <div>
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter Name"
+                  class="form-input"
+                  maxlength="40"
+                  autocomplete="off"
+                  required
+                />
+                <div class="name-error hidden">Incorrect Name</div>
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="signupEmail"
+                  class="form-input"
+                  placeholder="example@email,com"
+                  minlength="10"
+                  maxlength="40"
+                  autocomplete="off"
+                  required
+                />
+                <div class="email-error hidden">Incorrect Email</div>
+              </div>
+              <div>
+                <label for="password-user">Password</label>
+                <input
+                  type="password"
+                  id="password-user"
+                  placeholder="Enter Password"
+                  class="form-input"
+                  minlength="8"
+                  required
+                />
+                <div class="password-error hidden">
+                  Invalid Password , password must bigger than characters
+                </div>
+              </div>
+
+              <div>
+                <label for="password-confirm">Repeat Password</label>
+                <input
+                  type="password"
+                  id="password-confirm"
+                  placeholder="Enter Password Again"
+                  class="form-input"
+                  minlength="8"
+                  required
+                />
+                <div class="password-confirm-error hidden">
+                  Not Same Password
+                </div>
+              </div>
+
+              <button class="btn submit-btn btn-md btn-primary">Sign Up</button>
+              <p onclick="toggleSignModals()">have an account? signIn</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- End Sign up modal -->
+
+      <!-- Sign in modal -->
+      <div class="form__container" id="signin-modal">
+        <div class="form__modal">
+          <button class="close-btn" id="signin-close">
+            <i class="fa fa-times"></i>
+          </button>
+          <div class="modal__form__header">
+            <h3>Sign In</h3>
+          </div>
+          <div class="modal__form__content">
+            <!-- <p>Put you data to sign up </p> -->
+            <div class="modal__form">
+              <div class="signin-error"></div>
+              <div>
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="signinEmail"
+                  placeholder="Enter Email"
+                  class="form-input"
+                  minlength="10"
+                  maxlength="40"
+                  autocomplete="off"
+                  required
+                />
+                <div class="email-error hidden">Incorrect Email</div>
+              </div>
+
+              <div>
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter Password"
+                  class="form-input"
+                  minlength="8"
+                  required
+                />
+                <div class="password-error hidden">Incorrect Password</div>
+              </div>
+              <button class="btn submit-btn btn-md btn-primary">Sign In</button>
+              <p onclick="toggleSignModals()">
+                signUp if you didn't have an account
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Sign in modal  -->
+      <!-- End form model -->
+
+      <!--details Modal -->
+      <div
+        class="modal fade"
+        id="detailsModal"
+        tabindex="-1"
+        aria-labelledby="detailsModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Ingredient</h5>
+              <button
+                type="button"
+                class="btn-close close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="ingredients">
+              <!--End Body -->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary close"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--details Modal -->
+
+      <!-- Order Modal -->
+      <div class="form__container" id="order-modal">
+        <div class="form__modal">
+          <button class="close-btn" id="order-close">
+            <i class="fa fa-times"></i>
+          </button>
+          <div class="modal__form__header">
+            <h3>Order Now</h3>
+          </div>
+          <div class="modal__form__content">
+            <div class="modal__form">
+              <div class="order-error"></div>
+              <div>
+                <label for="phone-number">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone-number"
+                  placeholder="Enter Phone Number"
+                  class="form-input"
+                  required
+                />
+              </div>
+              <div class="order-phone-error" style="color: red"></div>
+
+              <div>
+                <label for="address">Address</label>
+                <input
+                  type="text"
+                  id="address"
+                  placeholder="Enter your Address"
+                  class="form-input"
+                  minlength="10"
+                  required
+                />
+              </div>
+              <div class="order-address-error" style="color: red"></div>
+              <!-- data-bs-toggle="modal" -->
+              <!-- data-bs-target="#orderResultModal" -->
+              <button class="btn btn-md btn-primary order">Order Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- End Order Modal -->
+
+      <!-- Order Result Modal -->
+      <div
+        class="modal fade"
+        id="orderResultModal"
+        tabindex="-1"
+        aria-labelledby="orderResultModal"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Order Content</h5>
+              <button
+                type="button"
+                class="btn-close close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body order-result-items"></div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary close"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Order Result Modal -->
+
+      <!-- cancel Order  -->
+
+      <div
+        class="modal fade"
+        id="orderCancelModal"
+        tabindex="-1"
+        aria-labelledby="orderCancelModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="orderCancelModalLabel">Order</h5>
+              <button
+                type="button"
+                class="btn-close close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary close"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- end cancel order -->
+    </main>
+
+    <div class="popup hidden"></div>
+    <!-- End Main -->
+
+    <!-- footer -->
+    <footer class="footer">Enjoy Eating Our Meals</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" 
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" 
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+
+    <script defer src="./src/js/controller.js"></script>
+  </body>
+</html>

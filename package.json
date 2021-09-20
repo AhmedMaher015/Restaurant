@@ -1,0 +1,29 @@
+{
+  "name": "restaurant",
+  "version": "1.0.0",
+  "description": "order food",
+  "main": "controller.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhmedMaher015/Restaurant.git"
+  },
+  "author": "AhmedMaher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AhmedMaher015/Restaurant/issues"
+  },
+  "homepage": "https://github.com/AhmedMaher015/Restaurant#readme",
+  "dependencies": {
+    "bootstrap": "^5.1.1",
+    "core-js": "^3.17.3",
+    "regenerator-runtime": "^0.13.9",
+    "sass": "^1.41.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
+}
