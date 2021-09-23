@@ -61,81 +61,61 @@
               <li class="nav-item">
                 <a class="nav-link" href="#cuisines">Our Cuisines</a>
               </li>
-              <li class="nav-item signin-icon">
+              <li class="nav-item signin-icon no-user">
                 <a class="nav-link" href="#" id="signin"> Sign in </a>
               </li>
-              <li class="nav-item signup-icon">
+              <li class="nav-item signup-icon no-user">
                 <a class="nav-link signup" href="#" id="signup"> Sign up </a>
               </li>
-
-              <!-- dropdown -->
-              <li class="nav-item user-icon hidden">
-                <div class="dropdown">
-                  <button
-                    class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="fas fa-user"></i>
-                  </button>
-                  <ul
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li>
-                      <button
-                        id="cart-open"
-                        type="button"
-                        class="btn btn-primary dropdown-item"
-                        data-bs-toggle="modal"
-                        data-bs-target="#cartModal"
-                      >
-                        <i class="fas fa-cart-arrow-down"></i> Cart
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="btn btn-primary dropdown-item favorite-open"
-                        data-bs-toggle="modal"
-                        data-bs-target="#favouriteModal"
-                      >
-                        <i class="fas fa-heart"></i> Favourite
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="btn btn-primary dropdown-item"
-                        id="orderBtn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#orderModal"
-                      >
-                        <i class="fas fa-hamburger"></i> Orders
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        id="profileBtn"
-                        type="button"
-                        class="btn btn-primary dropdown-item"
-                      >
-                        <i class="fas fa-user-circle"></i> Profile
-                      </button>
-                    </li>
-                    <li class="signoutBtnContainer">
-                      <button
-                        id="signoutBtn"
-                        type="button"
-                        class="btn btn-primary"
-                      >
-                        Sign Out
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+              <li class="nav-item user">
+                <button
+                  id="cart-open"
+                  type="button"
+                  class="btn btn-primary dropdown-item"
+                  data-bs-toggle="modal"
+                  data-bs-target="#cartModal"
+                >
+                  <i class="fas fa-cart-arrow-down"></i> Cart
+                </button>
+              </li>
+              <li class="nav-item user">
+                <button
+                  type="button"
+                  class="btn btn-primary dropdown-item favorite-open"
+                  data-bs-toggle="modal"
+                  data-bs-target="#favouriteModal"
+                >
+                  <i class="fas fa-heart"></i> Favourite
+                </button>
+              </li>
+              <li class="nav-item user">
+                <button
+                  type="button"
+                  class="btn btn-primary dropdown-item"
+                  id="orderBtn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#orderModal"
+                >
+                  <i class="fas fa-hamburger"></i> Orders
+                </button>
+              </li>
+              <li class="nav-item user">
+                <button
+                  id="profileBtn"
+                  type="button"
+                  class="btn btn-primary dropdown-item"
+                >
+                  <i class="fas fa-user-circle"></i> Profile
+                </button>
+              </li>
+              <li class="nav-item user signoutBtnContainer">
+                <button
+                  id="signoutBtn"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  Sign Out
+                </button>
               </li>
             </ul>
           </div>
@@ -338,7 +318,7 @@
       <!-- Sign Up Modal -->
       <div class="form__container" id="signup-modal">
         <div class="form__modal">
-          <button class="close-btn" id="close">
+          <button class="close-btn close" id="close">
             <i class="fa fa-times"></i>
           </button>
           <div class="modal__form__header">
@@ -346,7 +326,7 @@
           </div>
           <div class="modal__form__content">
             <!-- <p>Put you data to sign up </p> -->
-            <div class="modal__form">
+            <form class="modal__form">
               <div class="signup-error"></div>
               <div>
                 <label for="name">Name</label>
@@ -406,8 +386,8 @@
               </div>
 
               <button class="btn submit-btn btn-md btn-primary">Sign Up</button>
-              <p onclick="toggleSignModals()">have an account? signIn</p>
-            </div>
+              <p class="toggle-modal">have an account? signIn</p>
+            </form>
           </div>
         </div>
       </div>
@@ -417,7 +397,7 @@
       <!-- Sign in modal -->
       <div class="form__container" id="signin-modal">
         <div class="form__modal">
-          <button class="close-btn" id="signin-close">
+          <button class="close-btn close">
             <i class="fa fa-times"></i>
           </button>
           <div class="modal__form__header">
@@ -425,7 +405,7 @@
           </div>
           <div class="modal__form__content">
             <!-- <p>Put you data to sign up </p> -->
-            <div class="modal__form">
+            <form class="modal__form">
               <div class="signin-error"></div>
               <div>
                 <label for="email">Email</label>
@@ -455,10 +435,10 @@
                 <div class="password-error hidden">Incorrect Password</div>
               </div>
               <button class="btn submit-btn btn-md btn-primary">Sign In</button>
-              <p onclick="toggleSignModals()">
+              <p class="toggle-modal">
                 signUp if you didn't have an account
               </p>
-            </div>
+            </form>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ export const state = {
   categories: [],
   recipes: [],
   popular: [],
-  wishlist: [],
+  favoriteList: [],
   cartlist: [],
   orderslist: [],
   search: {
@@ -96,55 +96,18 @@ export const loadSearchResults = async function (recipeName) {
   //   console.log(state);
 };
 
-export const loadProfileLogin = async function (userInfo) {
-  try {
-    const data = await helpers.getJson(config.API_URL_LOGIN, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userInfo),
-    });
-    const user = data.data.user;
-    state.profile = {
-      name: user.name,
-      email: user.email,
-      photo: user.photo,
-      role: user.role,
-      token: data.token,
-    };
-  } catch (err) {
-    throw err;
-  }
-
-  //   console.log(state);
+export const loadProfile = async function (data) {
+  const user = data.data.user;
+  state.profile = {
+    name: user.name,
+    email: user.email,
+    photo: user.photo,
+    role: user.role,
+    token: data.token,
+  };
 };
 
-export const loadProfileSignup = async function (userInfo) {
-  try {
-    const data = await helpers.getJson(config.API_URL_SIGNUP, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(userInfo),
-    });
-    const user = data.data.user;
-    state.profile = {
-      name: user.name,
-      email: user.email,
-      photo: user.photo,
-      role: user.role,
-      token: data.token,
-    };
-  } catch (err) {
-    throw err;
-  }
-
-  //   console.log(state);
-};
 export const loadOrders = async function () {
-
   try {
     const data = await helpers.getJson(config.API_URL_ORDERS, {
       method: 'GET',
@@ -158,3 +121,28 @@ export const loadOrders = async function () {
     throw err;
   }
 };
+
+// export const loadCarts = async function (recipesIds) {
+//   arr.forEach(recipeId => {
+//     try {
+//       const data = await helpers.getJson(
+//         `${config.API_URL_RECIPES}?_id=${id}`,
+//         {
+//           method: 'GET',
+//         }
+//       )
+//       const [recipe] = data.data.data;
+//       state.cartlist.push({
+//         id: recipe._id,
+//         name: recipe.name,
+//         category: recipe.category,
+//         cookingTime: recipe.cookingTime,
+//         price: recipe.price,
+//         imageCover: recipe.imageCover,
+//         ingredients: recipe.ingredients,
+//       });
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   });
+// };

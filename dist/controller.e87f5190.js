@@ -13183,19 +13183,28 @@ var getJson = /*#__PURE__*/function () {
 
           case 6:
             data = _context.sent;
+
+            if (!(data.status === 'fail')) {
+              _context.next = 9;
+              break;
+            }
+
+            throw new Error(data.message);
+
+          case 9:
             return _context.abrupt("return", data);
 
-          case 10:
-            _context.prev = 10;
+          case 12:
+            _context.prev = 12;
             _context.t0 = _context["catch"](0);
-            throw new Error(_context.t0);
+            throw _context.t0;
 
-          case 13:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 10]]);
+    }, _callee, null, [[0, 12]]);
   }));
 
   return function getJson(_x, _x2) {
@@ -13231,7 +13240,7 @@ exports.API_URL_ORDERS = API_URL_ORDERS;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadOrders = exports.loadProfileSignup = exports.loadProfileLogin = exports.loadSearchResults = exports.loadCategories = exports.loadRecipe = exports.loadRecipes = exports.state = void 0;
+exports.loadOrders = exports.loadProfile = exports.loadSearchResults = exports.loadCategories = exports.loadRecipe = exports.loadRecipes = exports.state = void 0;
 
 var helpers = _interopRequireWildcard(require("./helpers.js"));
 
@@ -13279,7 +13288,7 @@ var state = {
   categories: [],
   recipes: [],
   popular: [],
-  wishlist: [],
+  favoriteList: [],
   cartlist: [],
   orderslist: [],
   search: {
@@ -13466,25 +13475,13 @@ var loadSearchResults = /*#__PURE__*/function () {
 
 exports.loadSearchResults = loadSearchResults;
 
-var loadProfileLogin = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(userInfo) {
-    var data, user;
+var loadProfile = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(data) {
+    var user;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _context5.prev = 0;
-            _context5.next = 3;
-            return helpers.getJson(config.API_URL_LOGIN, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(userInfo)
-            });
-
-          case 3:
-            data = _context5.sent;
             user = data.data.user;
             state.profile = {
               name: user.name,
@@ -13493,88 +13490,31 @@ var loadProfileLogin = /*#__PURE__*/function () {
               role: user.role,
               token: data.token
             };
-            _context5.next = 11;
-            break;
 
-          case 8:
-            _context5.prev = 8;
-            _context5.t0 = _context5["catch"](0);
-            throw _context5.t0;
-
-          case 11:
+          case 2:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 8]]);
+    }, _callee5);
   }));
 
-  return function loadProfileLogin(_x3) {
+  return function loadProfile(_x3) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.loadProfileLogin = loadProfileLogin;
+exports.loadProfile = loadProfile;
 
-var loadProfileSignup = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(userInfo) {
-    var data, user;
+var loadOrders = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+    var data;
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.prev = 0;
             _context6.next = 3;
-            return helpers.getJson(config.API_URL_SIGNUP, {
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              method: 'POST',
-              body: JSON.stringify(userInfo)
-            });
-
-          case 3:
-            data = _context6.sent;
-            user = data.data.user;
-            state.profile = {
-              name: user.name,
-              email: user.email,
-              photo: user.photo,
-              role: user.role,
-              token: data.token
-            };
-            _context6.next = 11;
-            break;
-
-          case 8:
-            _context6.prev = 8;
-            _context6.t0 = _context6["catch"](0);
-            throw _context6.t0;
-
-          case 11:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6, null, [[0, 8]]);
-  }));
-
-  return function loadProfileSignup(_x4) {
-    return _ref6.apply(this, arguments);
-  };
-}();
-
-exports.loadProfileSignup = loadProfileSignup;
-
-var loadOrders = /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var data;
-    return regeneratorRuntime.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            _context7.prev = 0;
-            _context7.next = 3;
             return helpers.getJson(config.API_URL_ORDERS, {
               method: 'GET',
               headers: {
@@ -13584,28 +13524,52 @@ var loadOrders = /*#__PURE__*/function () {
             });
 
           case 3:
-            data = _context7.sent;
+            data = _context6.sent;
             state.orderslist = _toConsumableArray(data.data);
-            _context7.next = 10;
+            _context6.next = 10;
             break;
 
           case 7:
-            _context7.prev = 7;
-            _context7.t0 = _context7["catch"](0);
-            throw _context7.t0;
+            _context6.prev = 7;
+            _context6.t0 = _context6["catch"](0);
+            throw _context6.t0;
 
           case 10:
           case "end":
-            return _context7.stop();
+            return _context6.stop();
         }
       }
-    }, _callee7, null, [[0, 7]]);
+    }, _callee6, null, [[0, 7]]);
   }));
 
   return function loadOrders() {
-    return _ref7.apply(this, arguments);
+    return _ref6.apply(this, arguments);
   };
-}();
+}(); // export const loadCarts = async function (recipesIds) {
+//   arr.forEach(recipeId => {
+//     try {
+//       const data = await helpers.getJson(
+//         `${config.API_URL_RECIPES}?_id=${id}`,
+//         {
+//           method: 'GET',
+//         }
+//       )
+//       const [recipe] = data.data.data;
+//       state.cartlist.push({
+//         id: recipe._id,
+//         name: recipe.name,
+//         category: recipe.category,
+//         cookingTime: recipe.cookingTime,
+//         price: recipe.price,
+//         imageCover: recipe.imageCover,
+//         ingredients: recipe.ingredients,
+//       });
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   });
+// };
+
 
 exports.loadOrders = loadOrders;
 },{"./helpers.js":"src/js/helpers.js","./config.js":"src/js/config.js","regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"src/js/views/recipeView.js":[function(require,module,exports) {
@@ -13636,6 +13600,10 @@ var recipeView = /*#__PURE__*/function () {
 
     _defineProperty(this, "_closeBtns", this._modal.querySelectorAll('.close'));
 
+    _defineProperty(this, "_favorites", JSON.parse(localStorage.getItem('favorite')) || []);
+
+    _defineProperty(this, "_cart", JSON.parse(localStorage.getItem('cart')) || []);
+
     _defineProperty(this, "_createIngredientLi", function (el) {
       return "\n  <li class=\"recipe__item\">\n    <i class=\"fas fa-check recipe__icon\"></i>\n    <div class=\"recipe__ingredient\">\n        <span class=\"recipe__unit\">".concat(el, "</span>\n        \n    </div>\n  </li>\n  ");
     });
@@ -13655,8 +13623,10 @@ var recipeView = /*#__PURE__*/function () {
 
       var html = "\n        <div class=\"recipe\">\n          <figure class=\"recipe__fig\">\n            <img src=\"".concat(recipe.imageCover, "\" alt=\"").concat(recipe.name, "\" class=\"recipe__img\">\n            <h1 class=\"recipe__title\">\n              <span>").concat(recipe.name, "</span>\n            </h1>\n          </figure>\n          <div class=\"recipe__details\">\n            <div class=\"recipe__info\">\n              <i class=\"fas fa-male recipe__info-icon\"></i>\n              <span class=\"recipe__info-people\">").concat(recipe.cookingTime, "</span>\n              <span class=\"recipe__info-text\"> min</span>\n            </div>\n            <div class=\"recipe-button\">\n              <button class=\"recipe__love data-bs-dismiss=\"modal\" value=").concat(recipe.id, " style=\"margin: 5px auto\">\n                <i class=\"far fa-heart\"></i>\n              </button>\n              <div class=\"addToFavorite-message\"></div>\n            </div>\n          </div>\n    \n          <div class=\"recipe__ingredients\">\n            <ul class=\"recipe__ingredient-list\">\n            ").concat(recipe.ingredients.map(function (el) {
         return _this2._createIngredientLi(el);
-      }).join(''), " \n            </ul>\n            <button class=\"btn-small recipe__btn\" value=").concat(recipe._id, "  data-bs-dismiss=\"modal\">\n              <i class=\"fas fa-cart-plus\"></i>\n                <span>Add to Cart</span>\n            </button>\n            <div class=\"addToCart-message\"></div>\n           \n           <div style=\"margin-bottom: 5px\">OR</div>\n            <button class=\"btn-small recipe__btn__order\" value=").concat(recipe.id, "  data-bs-dismiss=\"modal\">\n            <i class=\"fas fa-money-bill-wave\"></i>\n                <span>Order Now</span>\n            </button>\n            <div style=\"text-align: center;\">\n            <button class=\"add\" >+</button>\n            <input class=\"recipe__amount\" type=\"number\" value=\"1\" min=\"1>\" step=\"1\" max=\"100\" style=\"width: 25%; text-align: center\">\n            <button class=\"subtract\" >-</button>\n            </div>\n            \n          </div>\n        </div>\n    \n      ");
-      this._parent.innerHTML = html;
+      }).join(''), " \n            </ul>\n            <button class=\"btn-small recipe__cart\" value=").concat(recipe.id, "  data-bs-dismiss=\"modal\">\n              <i class=\"fas fa-cart-plus\"></i>\n                <span>Add to Cart</span>\n            </button>\n            <div class=\"addToCart-message\"></div>\n           \n           <div style=\"margin-bottom: 5px\">OR</div>\n            <button class=\"btn-small recipe__order\" value=").concat(recipe.id, "  data-bs-dismiss=\"modal\">\n            <i class=\"fas fa-money-bill-wave\"></i>\n                <span>Order Now</span>\n            </button>\n            <div style=\"text-align: center;\">\n            <button class=\"add\" >+</button>\n            <input class=\"recipe__amount\" type=\"number\" value=\"1\" min=\"1>\" step=\"1\" max=\"100\" style=\"width: 25%; text-align: center\">\n            <button class=\"subtract\" >-</button>\n            </div>\n            \n          </div>\n        </div>\n    \n      ");
+      this._parent.innerHTML = html; // add handler to favorite and cart btns
+
+      this.addHandlerToBtns();
     }
   }, {
     key: "showRecipeModal",
@@ -13672,6 +13642,64 @@ var recipeView = /*#__PURE__*/function () {
     key: "closeModalOnClickWindow",
     value: function closeModalOnClickWindow(e) {
       e.target == this._modal ? this.closeRecipeModal() : false;
+    }
+  }, {
+    key: "addHandlerToBtns",
+    value: function addHandlerToBtns() {
+      var btnLove = document.querySelector('.recipe__love');
+      var btnCart = document.querySelector('.recipe__cart');
+      btnLove.addEventListener('click', this.addToFavorite.bind(this));
+      btnCart.addEventListener('click', this.addToCart.bind(this));
+    }
+  }, {
+    key: "addToFavorite",
+    value: function addToFavorite() {
+      var _this3 = this;
+
+      var btnLove = document.querySelector('.recipe__love');
+      var recipeId = btnLove.value;
+
+      var IsItInFavorites = function IsItInFavorites(recipeId) {
+        var check = false;
+
+        _this3._favorites.forEach(function (id) {
+          if (recipeId === id) check = true;
+        });
+
+        return check;
+      };
+
+      if (IsItInFavorites(recipeId)) return;
+
+      this._favorites.push(recipeId);
+
+      localStorage.setItem('favorite', JSON.stringify(this._favorites));
+      console.log('added to favorite');
+    }
+  }, {
+    key: "addToCart",
+    value: function addToCart() {
+      var _this4 = this;
+
+      var btnCart = document.querySelector('.recipe__cart');
+      var recipeId = btnCart.value;
+
+      var IsItInCart = function IsItInCart(recipeId) {
+        var check = false;
+
+        _this4._cart.forEach(function (id) {
+          if (recipeId === id) check = true;
+        });
+
+        return check;
+      };
+
+      if (IsItInCart(recipeId)) return;
+
+      this._cart.push(recipeId);
+
+      localStorage.setItem('cart', JSON.stringify(this._cart));
+      console.log('added to cart');
     }
   }]);
 
@@ -13752,6 +13780,8 @@ var recipesView = /*#__PURE__*/function () {
     _defineProperty(this, "_parent", document.querySelector('.recipes-container'));
 
     _defineProperty(this, "_parentPopular", document.querySelector('.popular'));
+
+    this.createSpinner();
   }
 
   _createClass(recipesView, [{
@@ -13759,7 +13789,9 @@ var recipesView = /*#__PURE__*/function () {
     value: function renderRecipes(recipes) {
       var _this = this;
 
-      // loop in recipes
+      this._clearRecipes(); // loop in recipes
+
+
       recipes.forEach(function (recipe) {
         return _this._createRecipe(recipe);
       });
@@ -13769,7 +13801,9 @@ var recipesView = /*#__PURE__*/function () {
     value: function renderPopular(recipes) {
       var _this2 = this;
 
-      // loop in recipes
+      this._clearPopular(); // loop in recipes
+
+
       recipes.forEach(function (recipe) {
         return _this2._createPopular(recipe);
       });
@@ -13787,6 +13821,25 @@ var recipesView = /*#__PURE__*/function () {
       var html = "\n    <div class=\"col-sm-6 col-md-4 col-lg-3\">\n      <div class=\"card\"  id=".concat(recipe._id, ">\n        <img\n          src=").concat(recipe.imageCover, "\n          alt=\"pizza image\"\n          class=\"card-img-top\"\n        />\n        <div class=\"card-body\">\n          <div class=\"food-info\">\n            <h4 class=\"card-title recipe-name\">").concat(recipe.name, "</h4>\n            <p class=\"card-text price\">").concat(recipe.price, "$</p>\n          </div>\n        </div>\n      </div>\n    </div>\n\n      ");
 
       this._parentPopular.insertAdjacentHTML('afterbegin', html);
+    }
+  }, {
+    key: "createSpinner",
+    value: function createSpinner() {
+      var loader = "\n          <div class=\"spinner\"></div>\n          ";
+
+      this._parent.insertAdjacentHTML('afterbegin', loader);
+
+      this._parentPopular.insertAdjacentHTML('afterbegin', loader);
+    }
+  }, {
+    key: "_clearRecipes",
+    value: function _clearRecipes() {
+      this._parent.innerHTML = '';
+    }
+  }, {
+    key: "_clearPopular",
+    value: function _clearPopular() {
+      this._parentPopular.innerHTML = '';
     }
   }, {
     key: "addHandler",
@@ -13889,14 +13942,332 @@ var searchView = /*#__PURE__*/function () {
 var _default = new searchView();
 
 exports.default = _default;
+},{}],"src/js/views/loginView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var loginView = /*#__PURE__*/function () {
+  function loginView() {
+    var _this = this;
+
+    _classCallCheck(this, loginView);
+
+    _defineProperty(this, "_form", document.querySelector('#signin-modal .modal__form'));
+
+    _defineProperty(this, "_emailField", document.querySelector('#signinEmail'));
+
+    _defineProperty(this, "_passwordField", document.querySelector('#signin-modal #password'));
+
+    _defineProperty(this, "_error", document.querySelector('#signin-modal .signin-error'));
+
+    _defineProperty(this, "_modal", document.getElementById('signin-modal'));
+
+    _defineProperty(this, "_loginBtn", document.querySelector('.signin-icon'));
+
+    window.addEventListener('click', function (e) {
+      e.target == _this._modal ? _this.closeModal() : false;
+    });
+
+    this._loginBtn.addEventListener('click', this.showModal.bind(this));
+
+    var closeBtn = this._modal.querySelector('.close');
+
+    closeBtn.addEventListener('click', this.closeModal.bind(this));
+  }
+
+  _createClass(loginView, [{
+    key: "showModal",
+    value: function showModal() {
+      this._modal.classList.add('show__modal');
+    }
+  }, {
+    key: "closeModal",
+    value: function closeModal() {
+      this._modal.classList.remove('show__modal');
+    }
+  }, {
+    key: "addHandler",
+    value: function addHandler(handler) {
+      var _this2 = this;
+
+      this._form.addEventListener('submit', function (e) {
+        _this2._error.textContent = '';
+        e.preventDefault();
+        handler({
+          email: _this2._emailField.value,
+          password: _this2._passwordField.value
+        });
+      });
+    }
+  }, {
+    key: "showError",
+    value: function showError(err) {
+      this._error.textContent = err;
+    }
+  }]);
+
+  return loginView;
+}();
+
+var _default = new loginView();
+
+exports.default = _default;
+},{}],"src/js/views/signupView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var signupView = /*#__PURE__*/function () {
+  function signupView() {
+    var _this = this;
+
+    _classCallCheck(this, signupView);
+
+    _defineProperty(this, "_form", document.querySelector('#signup-modal .modal__form'));
+
+    _defineProperty(this, "_emailField", document.querySelector('#signupEmail'));
+
+    _defineProperty(this, "_passwordField", document.querySelector('#password-user'));
+
+    _defineProperty(this, "_error", document.querySelector('.signup-error'));
+
+    _defineProperty(this, "_modal", document.getElementById('signup-modal'));
+
+    _defineProperty(this, "_nameField", document.querySelector('#signup-modal #name'));
+
+    _defineProperty(this, "_passwordConfirmField", document.getElementById('password-confirm'));
+
+    _defineProperty(this, "_signupBtn", document.querySelector('.signup-icon'));
+
+    window.addEventListener('click', function (e) {
+      e.target == _this._modal ? _this.closeModal() : false;
+    });
+
+    this._signupBtn.addEventListener('click', this.showModal.bind(this));
+
+    var closeBtn = this._modal.querySelector('.close');
+
+    closeBtn.addEventListener('click', this.closeModal.bind(this));
+  }
+
+  _createClass(signupView, [{
+    key: "showModal",
+    value: function showModal() {
+      this._modal.classList.add('show__modal');
+    }
+  }, {
+    key: "closeModal",
+    value: function closeModal() {
+      this._modal.classList.remove('show__modal');
+    }
+  }, {
+    key: "addHandler",
+    value: function addHandler(handler) {
+      var _this2 = this;
+
+      this._form.addEventListener('submit', function (e) {
+        _this2._error.textContent = '';
+        e.preventDefault();
+        if (!_this2._validPasswordConfirm()) return;
+        handler({
+          name: _this2._nameField.value,
+          email: _this2._emailField.value,
+          password: _this2._passwordField.value,
+          passwordConfirm: _this2._passwordConfirmField.value
+        });
+      });
+    }
+  }, {
+    key: "showError",
+    value: function showError(err) {
+      this._error.textContent = err;
+    }
+  }, {
+    key: "_validPasswordConfirm",
+    value: function _validPasswordConfirm() {
+      if (this._passwordField.value !== this._passwordConfirmField.value) {
+        this._error.textContent = 'not same password';
+        return false;
+      }
+
+      return true;
+    }
+  }]);
+
+  return signupView;
+}();
+
+var _default = new signupView();
+
+exports.default = _default;
+},{}],"src/js/views/toggleFormsView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var toggleFormsView = /*#__PURE__*/function () {
+  function toggleFormsView() {
+    _classCallCheck(this, toggleFormsView);
+
+    _defineProperty(this, "_signupModal", document.getElementById('signup-modal'));
+
+    _defineProperty(this, "_loginModal", document.getElementById('signin-modal'));
+
+    _defineProperty(this, "_toggleBtns", document.querySelectorAll('.toggle-modal'));
+  }
+
+  _createClass(toggleFormsView, [{
+    key: "toggleForms",
+    value: function toggleForms() {
+      this._signupModal.classList.toggle('show__modal');
+
+      this._loginModal.classList.toggle('show__modal');
+    }
+  }, {
+    key: "addHandler",
+    value: function addHandler() {
+      var _this = this;
+
+      this._toggleBtns.forEach(function (btn) {
+        return btn.addEventListener('click', _this.toggleForms.bind(_this));
+      });
+    }
+  }]);
+
+  return toggleFormsView;
+}();
+
+var _default = new toggleFormsView();
+
+exports.default = _default;
+},{}],"src/js/views/loggedView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var loggedView = /*#__PURE__*/function () {
+  function loggedView() {
+    _classCallCheck(this, loggedView);
+
+    _defineProperty(this, "_userLoggedIcons", document.querySelectorAll('.user'));
+
+    _defineProperty(this, "_userNoLoggedIcons", document.querySelectorAll('.no-user'));
+
+    _defineProperty(this, "_signoutBtn", document.querySelector('#signoutBtn'));
+
+    this._signoutBtn.addEventListener('click', this.userSignout.bind(this));
+  }
+
+  _createClass(loggedView, [{
+    key: "_userLogged",
+    value: function _userLogged() {
+      var user = localStorage.getItem('user');
+      if (!user) return false;
+      return true;
+    }
+  }, {
+    key: "_removeUserLoggedIcons",
+    value: function _removeUserLoggedIcons() {
+      this._userLoggedIcons.forEach(function (icon) {
+        return icon.classList.add('hidden');
+      });
+    }
+  }, {
+    key: "_removeNoUserLoggedIcons",
+    value: function _removeNoUserLoggedIcons() {
+      this._userNoLoggedIcons.forEach(function (icon) {
+        return icon.classList.add('hidden');
+      });
+    }
+  }, {
+    key: "userLoggedActions",
+    value: function userLoggedActions() {
+      this._userLogged() ? this._removeNoUserLoggedIcons() : this._removeUserLoggedIcons();
+    }
+  }, {
+    key: "userLogged",
+    value: function userLogged(userData) {
+      var user = userData.data.user;
+      localStorage.setItem('user', JSON.stringify({
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+        role: user.role,
+        token: userData.token
+      }));
+      location.reload();
+    }
+  }, {
+    key: "userSignout",
+    value: function userSignout() {
+      localStorage.removeItem('user');
+      location.reload();
+    }
+  }]);
+
+  return loggedView;
+}();
+
+var _default = new loggedView();
+
+exports.default = _default;
 },{}],"src/js/controller.js":[function(require,module,exports) {
 "use strict";
 
-require("regenerator-runtime/runtime");
+var _runtime = require("regenerator-runtime/runtime");
 
 require("core-js/stable");
 
 var _model = require("./model.js");
+
+var config = _interopRequireWildcard(require("./config.js"));
+
+var helpers = _interopRequireWildcard(require("./helpers.js"));
 
 var _recipeView = _interopRequireDefault(require("./views/recipeView.js"));
 
@@ -13906,7 +14277,19 @@ var _recipesView = _interopRequireDefault(require("./views/recipesView.js"));
 
 var _searchView = _interopRequireDefault(require("./views/searchView.js"));
 
+var _loginView = _interopRequireDefault(require("./views/loginView.js"));
+
+var _signupView = _interopRequireDefault(require("./views/signupView.js"));
+
+var _toggleFormsView = _interopRequireDefault(require("./views/toggleFormsView.js"));
+
+var _loggedView = _interopRequireDefault(require("./views/loggedView.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -13952,8 +14335,6 @@ var controlRecipes = /*#__PURE__*/function () {
   };
 }();
 
-controlRecipes();
-
 var controlRecipe = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
     var id;
@@ -13996,12 +14377,148 @@ var controlSearch = function controlSearch(searchWord) {
   _searchView.default.addHandlerToCardsSearch(controlRecipe);
 };
 
+var controlLogin = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(userInfo) {
+    var res, data;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            _context3.next = 3;
+            return fetch(config.API_URL_LOGIN, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(userInfo)
+            });
+
+          case 3:
+            res = _context3.sent;
+            _context3.next = 6;
+            return res.json();
+
+          case 6:
+            data = _context3.sent;
+
+            if (!(data.status === 'fail')) {
+              _context3.next = 9;
+              break;
+            }
+
+            throw new Error(data.message);
+
+          case 9:
+            // store on state
+            (0, _model.loadProfile)(data); // user logged actions
+
+            _loggedView.default.userLogged(data);
+
+            _context3.next = 16;
+            break;
+
+          case 13:
+            _context3.prev = 13;
+            _context3.t0 = _context3["catch"](0);
+
+            _loginView.default.showError(_context3.t0.message);
+
+          case 16:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 13]]);
+  }));
+
+  return function controlLogin(_x2) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var controlSignup = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(userInfo) {
+    var res, data;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            _context4.next = 3;
+            return fetch(config.API_URL_SIGNUP, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(userInfo)
+            });
+
+          case 3:
+            res = _context4.sent;
+            _context4.next = 6;
+            return res.json();
+
+          case 6:
+            data = _context4.sent;
+
+            if (!(data.status === 'fail')) {
+              _context4.next = 9;
+              break;
+            }
+
+            throw new Error(data.message);
+
+          case 9:
+            // store on state
+            (0, _model.loadProfile)(data); // user logged actions
+
+            helpers.userLogged(data);
+            _context4.next = 17;
+            break;
+
+          case 13:
+            _context4.prev = 13;
+            _context4.t0 = _context4["catch"](0);
+            console.log(_context4.t0.message);
+
+            _signupView.default.showError(_context4.t0.message);
+
+          case 17:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[0, 13]]);
+  }));
+
+  return function controlSignup(_x3) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
 var init = function init() {
+  // add handler to login
+  _loginView.default.addHandler(controlLogin); // add handler to signup
+
+
+  _signupView.default.addHandler(controlSignup); // add handler to switch between login and signup
+
+
+  _toggleFormsView.default.addHandler(); // add handler to search
+
+
   _searchView.default.addHandler(controlSearch);
-};
+}; // check if user logged
+
+
+_loggedView.default.userLoggedActions(); // load recipes
+
+
+controlRecipes(); // add handlers
 
 init();
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","core-js/stable":"node_modules/core-js/stable/index.js","./model.js":"src/js/model.js","./views/recipeView.js":"src/js/views/recipeView.js","./views/categoriesView.js":"src/js/views/categoriesView.js","./views/recipesView.js":"src/js/views/recipesView.js","./views/searchView.js":"src/js/views/searchView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","core-js/stable":"node_modules/core-js/stable/index.js","./model.js":"src/js/model.js","./config.js":"src/js/config.js","./helpers.js":"src/js/helpers.js","./views/recipeView.js":"src/js/views/recipeView.js","./views/categoriesView.js":"src/js/views/categoriesView.js","./views/recipesView.js":"src/js/views/recipesView.js","./views/searchView.js":"src/js/views/searchView.js","./views/loginView.js":"src/js/views/loginView.js","./views/signupView.js":"src/js/views/signupView.js","./views/toggleFormsView.js":"src/js/views/toggleFormsView.js","./views/loggedView.js":"src/js/views/loggedView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -14029,7 +14546,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45405" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37285" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

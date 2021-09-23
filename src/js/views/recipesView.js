@@ -1,14 +1,18 @@
 class recipesView {
   _parent = document.querySelector('.recipes-container');
   _parentPopular = document.querySelector('.popular');
-  constructor() {}
+  constructor() {
+    this.createSpinner();
+  }
 
   renderRecipes(recipes) {
+    this._clearRecipes();
     // loop in recipes
     recipes.forEach(recipe => this._createRecipe(recipe));
   }
 
   renderPopular(recipes) {
+    this._clearPopular();
     // loop in recipes
     recipes.forEach(recipe => this._createPopular(recipe));
   }
@@ -65,6 +69,21 @@ class recipesView {
     this._parentPopular.insertAdjacentHTML('afterbegin', html);
   }
 
+  createSpinner() {
+    const loader = `
+          <div class="spinner"></div>
+          `;
+    this._parent.insertAdjacentHTML('afterbegin', loader);
+    this._parentPopular.insertAdjacentHTML('afterbegin', loader);
+  }
+
+  _clearRecipes() {
+    this._parent.innerHTML = '';
+  }
+
+  _clearPopular() {
+    this._parentPopular.innerHTML = '';
+  }
   addHandler(handler) {
     const recipeCards = document.querySelectorAll('.card');
     recipeCards.forEach(card => card.addEventListener('click', handler));
