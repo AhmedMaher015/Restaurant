@@ -24,20 +24,6 @@ class loggedView {
       ? this._removeNoUserLoggedIcons()
       : this._removeUserLoggedIcons();
   }
-  userLogged(userData) {
-    const user = userData.data.user;
-    localStorage.setItem(
-      'user',
-      JSON.stringify({
-        name: user.name,
-        email: user.email,
-        photo: user.photo,
-        role: user.role,
-        token: userData.token,
-      })
-    );
-    location.reload();
-  }
 
   userSignout() {
     localStorage.removeItem('user');

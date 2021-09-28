@@ -13219,7 +13219,7 @@ exports.getJson = getJson;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.API_URL_ORDERS = exports.API_URL_CATEGORIES = exports.API_URL_RECIPES = exports.API_URL_SEARCH = exports.API_URL_SIGNUP = exports.API_URL_LOGIN = exports.API_URL = void 0;
+exports.API_URL_USER = exports.API_URL_ORDERS = exports.API_URL_CATEGORIES = exports.API_URL_RECIPES = exports.API_URL_SEARCH = exports.API_URL_SIGNUP = exports.API_URL_LOGIN = exports.API_URL = void 0;
 var API_URL = 'https://panda-restaurant.herokuapp.com/api/v1/';
 exports.API_URL = API_URL;
 var API_URL_LOGIN = "".concat(API_URL, "users/login");
@@ -13234,13 +13234,15 @@ var API_URL_CATEGORIES = "".concat(API_URL, "categories/");
 exports.API_URL_CATEGORIES = API_URL_CATEGORIES;
 var API_URL_ORDERS = "".concat(API_URL, "orders/");
 exports.API_URL_ORDERS = API_URL_ORDERS;
+var API_URL_USER = "".concat(API_URL, "users/");
+exports.API_URL_USER = API_URL_USER;
 },{}],"src/js/model.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadOrders = exports.loadProfile = exports.loadSearchResults = exports.loadCategories = exports.loadRecipe = exports.loadRecipes = exports.state = void 0;
+exports.changeProfilePassword = exports.editProfile = exports.loadOrders = exports.loadProfile = exports.loadSearchResults = exports.loadCategories = exports.loadRecipe = exports.loadRecipes = exports.state = void 0;
 
 var helpers = _interopRequireWildcard(require("./helpers.js"));
 
@@ -13314,6 +13316,7 @@ var loadRecipes = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return helpers.getJson(config.API_URL_RECIPES, {
+              headers: {},
               method: 'GET'
             });
 
@@ -13355,6 +13358,7 @@ var loadRecipe = /*#__PURE__*/function () {
             _context2.prev = 0;
             _context2.next = 3;
             return helpers.getJson("".concat(config.API_URL_RECIPES, "?_id=").concat(id), {
+              headers: {},
               method: 'GET'
             });
 
@@ -13369,22 +13373,20 @@ var loadRecipe = /*#__PURE__*/function () {
               price: recipe.price,
               imageCover: recipe.imageCover,
               ingredients: recipe.ingredients
-            }; // console.log(state.recipe);
+            };
+            return _context2.abrupt("return", state.recipe);
 
-            _context2.next = 11;
-            break;
-
-          case 8:
-            _context2.prev = 8;
+          case 9:
+            _context2.prev = 9;
             _context2.t0 = _context2["catch"](0);
             throw _context2.t0;
 
-          case 11:
+          case 12:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 8]]);
+    }, _callee2, null, [[0, 9]]);
   }));
 
   return function loadRecipe(_x) {
@@ -13404,6 +13406,7 @@ var loadCategories = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return helpers.getJson(config.API_URL_CATEGORIES, {
+              headers: {},
               method: 'GET'
             });
 
@@ -13443,6 +13446,7 @@ var loadSearchResults = /*#__PURE__*/function () {
             _context4.prev = 0;
             _context4.next = 3;
             return helpers.getJson("".concat(config.API_URL_SEARCH).concat(recipeName), {
+              headers: {},
               method: 'GET'
             });
 
@@ -13475,46 +13479,34 @@ var loadSearchResults = /*#__PURE__*/function () {
 
 exports.loadSearchResults = loadSearchResults;
 
-var loadProfile = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(data) {
-    var user;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            user = data.data.user;
-            state.profile = {
-              name: user.name,
-              email: user.email,
-              photo: user.photo,
-              role: user.role,
-              token: data.token
-            };
-
-          case 2:
-          case "end":
-            return _context5.stop();
-        }
-      }
-    }, _callee5);
-  }));
-
-  return function loadProfile(_x3) {
-    return _ref5.apply(this, arguments);
-  };
-}();
+var loadProfile = function loadProfile(data) {
+  try {
+    var user = data.data.user;
+    state.profile = {
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+      role: user.role,
+      token: data.token,
+      id: user._id
+    };
+    localStorage.setItem('user', JSON.stringify(state.profile));
+  } catch (err) {
+    throw err;
+  }
+};
 
 exports.loadProfile = loadProfile;
 
 var loadOrders = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
     var data;
-    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context6.prev = 0;
-            _context6.next = 3;
+            _context5.prev = 0;
+            _context5.next = 3;
             return helpers.getJson(config.API_URL_ORDERS, {
               method: 'GET',
               headers: {
@@ -13524,54 +13516,128 @@ var loadOrders = /*#__PURE__*/function () {
             });
 
           case 3:
-            data = _context6.sent;
+            data = _context5.sent;
             state.orderslist = _toConsumableArray(data.data);
-            _context6.next = 10;
+            _context5.next = 10;
             break;
 
           case 7:
-            _context6.prev = 7;
-            _context6.t0 = _context6["catch"](0);
-            throw _context6.t0;
+            _context5.prev = 7;
+            _context5.t0 = _context5["catch"](0);
+            throw _context5.t0;
 
           case 10:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 7]]);
+  }));
+
+  return function loadOrders() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+exports.loadOrders = loadOrders;
+
+var editProfile = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(userData) {
+    var user, data;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            user = JSON.parse(localStorage.getItem('user'));
+            _context6.prev = 1;
+            _context6.next = 4;
+            return helpers.getJson("".concat(config.API_URL_USER, "updateMe"), {
+              method: 'PATCH',
+              headers: {
+                Authorization: "Bearer ".concat(user.token),
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(userData)
+            });
+
+          case 4:
+            data = _context6.sent;
+            state.profile = {
+              name: data.user.name,
+              email: data.user.email,
+              photo: data.user.photo,
+              role: data.user.role,
+              token: user.token,
+              id: data.user._id
+            };
+            localStorage.setItem('user', JSON.stringify(state.profile));
+            _context6.next = 12;
+            break;
+
+          case 9:
+            _context6.prev = 9;
+            _context6.t0 = _context6["catch"](1);
+            throw _context6.t0;
+
+          case 12:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 7]]);
+    }, _callee6, null, [[1, 9]]);
   }));
 
-  return function loadOrders() {
+  return function editProfile(_x3) {
     return _ref6.apply(this, arguments);
   };
-}(); // export const loadCarts = async function (recipesIds) {
-//   arr.forEach(recipeId => {
-//     try {
-//       const data = await helpers.getJson(
-//         `${config.API_URL_RECIPES}?_id=${id}`,
-//         {
-//           method: 'GET',
-//         }
-//       )
-//       const [recipe] = data.data.data;
-//       state.cartlist.push({
-//         id: recipe._id,
-//         name: recipe.name,
-//         category: recipe.category,
-//         cookingTime: recipe.cookingTime,
-//         price: recipe.price,
-//         imageCover: recipe.imageCover,
-//         ingredients: recipe.ingredients,
-//       });
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   });
-// };
+}();
 
+exports.editProfile = editProfile;
 
-exports.loadOrders = loadOrders;
+var changeProfilePassword = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(userData) {
+    var user, data;
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            user = JSON.parse(localStorage.getItem('user'));
+            _context7.prev = 1;
+            _context7.next = 4;
+            return helpers.getJson("".concat(config.API_URL_USER, "updateMyPassword"), {
+              method: 'PATCH',
+              headers: {
+                Authorization: "Bearer ".concat(user.token),
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(userData)
+            });
+
+          case 4:
+            data = _context7.sent;
+            loadProfile(data);
+            _context7.next = 11;
+            break;
+
+          case 8:
+            _context7.prev = 8;
+            _context7.t0 = _context7["catch"](1);
+            throw _context7.t0;
+
+          case 11:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[1, 8]]);
+  }));
+
+  return function changeProfilePassword(_x4) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+exports.changeProfilePassword = changeProfilePassword;
 },{"./helpers.js":"src/js/helpers.js","./config.js":"src/js/config.js","regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"src/js/views/recipeView.js":[function(require,module,exports) {
 "use strict";
 
@@ -14230,19 +14296,6 @@ var loggedView = /*#__PURE__*/function () {
       this._userLogged() ? this._removeNoUserLoggedIcons() : this._removeUserLoggedIcons();
     }
   }, {
-    key: "userLogged",
-    value: function userLogged(userData) {
-      var user = userData.data.user;
-      localStorage.setItem('user', JSON.stringify({
-        name: user.name,
-        email: user.email,
-        photo: user.photo,
-        role: user.role,
-        token: userData.token
-      }));
-      location.reload();
-    }
-  }, {
     key: "userSignout",
     value: function userSignout() {
       localStorage.removeItem('user');
@@ -14254,6 +14307,250 @@ var loggedView = /*#__PURE__*/function () {
 }();
 
 var _default = new loggedView();
+
+exports.default = _default;
+},{}],"src/js/views/cartView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var cartView = /*#__PURE__*/function () {
+  function cartView() {
+    _classCallCheck(this, cartView);
+
+    _defineProperty(this, "_modal", document.querySelector('#cartModal'));
+
+    _defineProperty(this, "_parent", document.querySelector('#cartModal .cart-items'));
+
+    _defineProperty(this, "_cartIcon", document.querySelector('#cart-open'));
+  }
+
+  _createClass(cartView, [{
+    key: "renderCart",
+    value: function renderCart(recipe) {
+      if (!recipe) return; // recipes.forEach(recipe => this._createCart(recipe));
+
+      var html = this._createCart(recipe);
+
+      this._parent.insertAdjacentHTML('afterbegin', html);
+    }
+  }, {
+    key: "_createCart",
+    value: function _createCart(recipe) {
+      return "\n    <li class=\"cart-item\">\n      <div class=\"row\">\n        <div class=\"col-8 cart-content\">\n          <h3>".concat(recipe.name, "</h3>\n          <div class=\"summary\">\n          <span class=\"price\" value=").concat(recipe.price, ">").concat(recipe.price, "$</span>\n            <div style=\"text-align: center;\">\n            <button class=\"add\" >+</button>\n            <input class=\"amount recipe__amount\" type=\"number\" value=\"1\" min=\"1>\" step=\"1\" max=\"100\" oninput=\"changeinput(this)\" onchange=\"changeinput(this)\" style=\"width: 50%; text-align: center\">\n            <button class=\"subtract\">-</button>\n          </div>\n          \n          </div>\n          <div class=\"hidden id\">").concat(recipe._id, "</div>\n          <div style=\"margin: 10px 0px\">\n            <button class=\"btn btn-danger btn-md remove-cart\" value=").concat(recipe._id, ">Remove</button>\n            \n          </div>\n        </div>\n        <div class=\"col-4\">\n          <img class=\"pic\" src=").concat(recipe.imageCover, " />\n        </div>\n      </div>\n    </li>\n    ");
+    }
+  }, {
+    key: "addHandler",
+    value: function addHandler(handler) {
+      this._cartIcon.addEventListener('click', handler);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this._parent.innerHTML = '';
+    }
+  }]);
+
+  return cartView;
+}();
+
+var _default = new cartView();
+
+exports.default = _default;
+},{}],"src/js/views/favoriteView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var favoriteView = /*#__PURE__*/function () {
+  function favoriteView() {
+    _classCallCheck(this, favoriteView);
+
+    _defineProperty(this, "_modal", document.querySelector('#favouriteModal'));
+
+    _defineProperty(this, "_parent", document.querySelector('#favouriteModal .favorite-items'));
+
+    _defineProperty(this, "_favoriteIcon", document.querySelector('.favorite-open'));
+  }
+
+  _createClass(favoriteView, [{
+    key: "renderFavorite",
+    value: function renderFavorite(recipe) {
+      if (!recipe) return; // recipes.forEach(recipe => this._createCart(recipe));
+
+      var html = this._createFavorite(recipe);
+
+      this._parent.insertAdjacentHTML('afterbegin', html);
+    }
+  }, {
+    key: "_createFavorite",
+    value: function _createFavorite(recipe) {
+      return "\n      <li class=\"cart-item\">\n      \n\n      <div class=\"row\">\n        <div class=\"col-8 cart-content\">\n          <h3>".concat(recipe.name, "  <span style=\"color: red;\">\u2764\uFE0F</span></h3>\n         \n          <div class=\"hidden id\">").concat(recipe._id, "</div>\n        </div>\n        <div class=\"col-4\">\n          <img class=\"pic\" src=").concat(recipe.imageCover, " />\n        </div>\n      </div>\n    \n    \n      </li>\n      ");
+    }
+  }, {
+    key: "addHandler",
+    value: function addHandler(handler) {
+      this._favoriteIcon.addEventListener('click', handler);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this._parent.innerHTML = '';
+    }
+  }]);
+
+  return favoriteView;
+}();
+
+var _default = new favoriteView();
+
+exports.default = _default;
+},{}],"src/js/views/profileView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var profileView = /*#__PURE__*/function () {
+  function profileView() {
+    _classCallCheck(this, profileView);
+
+    _defineProperty(this, "_parent", document.querySelector('#profileModal .modal-body'));
+
+    _defineProperty(this, "_modal", document.querySelector('#profileModal'));
+
+    _defineProperty(this, "_profileIcon", document.querySelector('#profileBtn'));
+  }
+
+  _createClass(profileView, [{
+    key: "renderProfile",
+    value: function renderProfile() {
+      var user = JSON.parse(localStorage.getItem('user'));
+      this.clear();
+
+      var html = this._createProfile(user);
+
+      this._parent.insertAdjacentHTML('afterbegin', html);
+
+      this.addhandlers();
+    }
+  }, {
+    key: "_createProfile",
+    value: function _createProfile(profile) {
+      return "\n    <div class=\"profile-img\">\n    <img src=".concat(profile.photo, " alt=\"\">\n  </div>\n\n  <div class=\"profile__info\">\n    <p><span>Name:</span>  ").concat(profile.name, "</p>\n    <p><span>Email:</span> ").concat(profile.email, "</p>\n  </div>\n  <div class=\"profile__edit\">\n  <button class=\"btn btn-md btn-primary edit-info\">Edit Profile</button>\n  <button class=\"btn btn-md btn-primary change-password\">Change Password</button>\n</div>\n\n\n<div class=\"modal__form__content profile__edit--info hidden\">\n  <!-- <p>Put you data to sign up </p> -->\n  <form class=\"modal__form\">\n    <div class=\"profile-error\"></div>\n    <div>\n      <label for=\"profileEmail\">Email</label>\n      <input\n        type=\"email\"\n        id=\"profileEmail\"\n        value = ").concat(profile.email, "\n        placeholder=\"Enter Email\"\n        class=\"form-input\"\n        minlength=\"10\"\n        maxlength=\"40\"\n        autocomplete=\"off\"\n        required\n      />\n      \n    </div>\n\n    <div>\n      <label for=\"profileName\">Name</label>\n      <input\n        type=\"text\"\n        id=\"profileName\"\n        value = ").concat(profile.name, "\n        placeholder=\"Enter Name\"\n        class=\"form-input\"\n        minlength=\"8\"\n        autocomplete=\"off\"\n        required\n      />\n      \n    </div>\n    <button class=\"btn submit-btn btn-md btn-primary\" type=\"submit\">Save Changes</button>\n\n  </form>\n</div>\n\n<div class=\"modal__form__content profile__edit--password hidden\">\n  <!-- <p>Put you data to sign up </p> -->\n  <form class=\"modal__form\">\n    <div class=\"profile-error\"></div>\n    <div>\n      <label for=\"profilePassword\">Password</label>\n      <input\n        type=\"password\"\n        id=\"profilePassword\"\n        placeholder=\"Enter Password\"\n        class=\"form-input\"\n        minlength=\"8\"\n        autocomplete=\"off\"\n        required\n      />\n      \n    </div>\n\n    <div>\n      <label for=\"profilePasswordConfirm\">Repeat Password</label>\n      <input\n        type=\"password\"\n        id=\"profilePasswordConfirm\"\n        placeholder=\"Enter Password Again\"\n        class=\"form-input\"\n        minlength=\"8\"\n        autocomplete=\"off\"\n        required\n      />\n      \n    </div>\n    <button class=\"btn submit-btn btn-md btn-primary\" type=\"submit\">Save Changes</button>\n\n  </form>\n\n  \n</div>\n\n<div class=\"delete-email\">\n  <button class=\"btn btn-danger btn-lg\" id=\"deleteEmail\">Delete Email</button>\n</div>\n\n      ");
+    }
+  }, {
+    key: "_showEditInfo",
+    value: function _showEditInfo() {
+      var editContainer = document.querySelector('.profile__edit--info');
+      var changePassContainer = document.querySelector('.profile__edit--password'); // add hidden to change password container
+
+      !changePassContainer.classList.contains('hidden') ? changePassContainer.classList.add('hidden') : false; // show edit info container
+
+      editContainer.classList.contains('hidden') ? editContainer.classList.remove('hidden') : false;
+    }
+  }, {
+    key: "_showChangePassword",
+    value: function _showChangePassword() {
+      var editContainer = document.querySelector('.profile__edit--info');
+      var changePassContainer = document.querySelector('.profile__edit--password'); // add hidden to edit info container
+
+      !editContainer.classList.contains('hidden') ? editContainer.classList.add('hidden') : false; // show change password container
+
+      changePassContainer.classList.contains('hidden') ? changePassContainer.classList.remove('hidden') : false;
+    }
+  }, {
+    key: "addhandlers",
+    value: function addhandlers() {
+      var editInfoBtn = document.querySelector('#profileModal .profile__edit .edit-info');
+      var changePasswordBtn = document.querySelector('#profileModal .profile__edit .change-password');
+      editInfoBtn.addEventListener('click', this._showEditInfo);
+      changePasswordBtn.addEventListener('click', this._showChangePassword);
+    }
+  }, {
+    key: "addHandler",
+    value: function addHandler(handler) {
+      this._profileIcon.addEventListener('click', handler);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this._parent.innerHTML = '';
+    }
+  }, {
+    key: "addHandlerEditProfile",
+    value: function addHandlerEditProfile(handler) {
+      var _this = this;
+
+      var editInfo = document.querySelector('#profileModal .profile__edit--info form');
+      var email = document.getElementById('profileEmail');
+      var name = document.getElementById('profileName');
+      editInfo.addEventListener('submit', function (e) {
+        e.preventDefault();
+        handler({
+          email: email.value,
+          name: name.value
+        });
+
+        _this.renderProfile();
+      });
+    }
+  }, {
+    key: "addHandlerChangePassword",
+    value: function addHandlerChangePassword(handler) {
+      var _this2 = this;
+
+      var editPassword = document.querySelector('#profileModal .profile__edit--password form');
+      var password = document.getElementById('profilePassword');
+      var passwordConfirm = document.getElementById('profilePasswordConfirm');
+      editPassword.addEventListener('submit', function (e) {
+        e.preventDefault();
+        handler({
+          password: password.value,
+          passwordConfirm: passwordConfirm.value
+        });
+
+        _this2.renderProfile();
+      });
+    }
+  }]);
+
+  return profileView;
+}();
+
+var _default = new profileView();
 
 exports.default = _default;
 },{}],"src/js/controller.js":[function(require,module,exports) {
@@ -14284,6 +14581,12 @@ var _signupView = _interopRequireDefault(require("./views/signupView.js"));
 var _toggleFormsView = _interopRequireDefault(require("./views/toggleFormsView.js"));
 
 var _loggedView = _interopRequireDefault(require("./views/loggedView.js"));
+
+var _cartView = _interopRequireDefault(require("./views/cartView.js"));
+
+var _favoriteView = _interopRequireDefault(require("./views/favoriteView.js"));
+
+var _profileView = _interopRequireDefault(require("./views/profileView.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -14411,10 +14714,8 @@ var controlLogin = /*#__PURE__*/function () {
 
           case 9:
             // store on state
-            (0, _model.loadProfile)(data); // user logged actions
-
-            _loggedView.default.userLogged(data);
-
+            (0, _model.loadProfile)(data);
+            location.reload();
             _context3.next = 16;
             break;
 
@@ -14471,9 +14772,8 @@ var controlSignup = /*#__PURE__*/function () {
 
           case 9:
             // store on state
-            (0, _model.loadProfile)(data); // user logged actions
-
-            helpers.userLogged(data);
+            (0, _model.loadProfile)(data);
+            location.reload();
             _context4.next = 17;
             break;
 
@@ -14497,6 +14797,147 @@ var controlSignup = /*#__PURE__*/function () {
   };
 }();
 
+var controlCarts = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+    var cartIds;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            // get carts Ids
+            cartIds = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (!(!cartIds && cartIds.length === 0)) {
+              _context6.next = 3;
+              break;
+            }
+
+            return _context6.abrupt("return");
+
+          case 3:
+            // clear carts
+            _cartView.default.clear(); // render carts
+
+
+            cartIds.forEach( /*#__PURE__*/function () {
+              var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(id) {
+                var recipe;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                  while (1) {
+                    switch (_context5.prev = _context5.next) {
+                      case 0:
+                        _context5.next = 2;
+                        return (0, _model.loadRecipe)(id);
+
+                      case 2:
+                        recipe = _context5.sent;
+
+                        _cartView.default.renderCart(recipe);
+
+                      case 4:
+                      case "end":
+                        return _context5.stop();
+                    }
+                  }
+                }, _callee5);
+              }));
+
+              return function (_x4) {
+                return _ref6.apply(this, arguments);
+              };
+            }());
+
+          case 5:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function controlCarts() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var controlFavorites = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+    var favoriteIds;
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            // get carts Ids
+            favoriteIds = JSON.parse(localStorage.getItem('favorite')) || [];
+
+            if (!(!favoriteIds && favoriteIds.length === 0)) {
+              _context8.next = 3;
+              break;
+            }
+
+            return _context8.abrupt("return");
+
+          case 3:
+            // clear carts
+            _favoriteView.default.clear(); // render carts
+
+
+            favoriteIds.forEach( /*#__PURE__*/function () {
+              var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(id) {
+                var recipe;
+                return regeneratorRuntime.wrap(function _callee7$(_context7) {
+                  while (1) {
+                    switch (_context7.prev = _context7.next) {
+                      case 0:
+                        _context7.next = 2;
+                        return (0, _model.loadRecipe)(id);
+
+                      case 2:
+                        recipe = _context7.sent;
+
+                        _favoriteView.default.renderFavorite(recipe);
+
+                      case 4:
+                      case "end":
+                        return _context7.stop();
+                    }
+                  }
+                }, _callee7);
+              }));
+
+              return function (_x5) {
+                return _ref8.apply(this, arguments);
+              };
+            }());
+
+          case 5:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
+  }));
+
+  return function controlFavorites() {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+var controlProfile = function controlProfile() {
+  // render profile
+  _profileView.default.renderProfile();
+
+  try {
+    // edit profile
+    _profileView.default.addHandlerEditProfile(_model.editProfile); // change password
+
+
+    _profileView.default.addHandlerChangePassword(_model.changeProfilePassword);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 var init = function init() {
   // add handler to login
   _loginView.default.addHandler(controlLogin); // add handler to signup
@@ -14508,7 +14949,16 @@ var init = function init() {
   _toggleFormsView.default.addHandler(); // add handler to search
 
 
-  _searchView.default.addHandler(controlSearch);
+  _searchView.default.addHandler(controlSearch); // add handler to cart icon
+
+
+  _cartView.default.addHandler(controlCarts); // add handler to favorite icon
+
+
+  _favoriteView.default.addHandler(controlFavorites); // add handler to profile icon
+
+
+  _profileView.default.addHandler(controlProfile);
 }; // check if user logged
 
 
@@ -14518,7 +14968,7 @@ _loggedView.default.userLoggedActions(); // load recipes
 controlRecipes(); // add handlers
 
 init();
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","core-js/stable":"node_modules/core-js/stable/index.js","./model.js":"src/js/model.js","./config.js":"src/js/config.js","./helpers.js":"src/js/helpers.js","./views/recipeView.js":"src/js/views/recipeView.js","./views/categoriesView.js":"src/js/views/categoriesView.js","./views/recipesView.js":"src/js/views/recipesView.js","./views/searchView.js":"src/js/views/searchView.js","./views/loginView.js":"src/js/views/loginView.js","./views/signupView.js":"src/js/views/signupView.js","./views/toggleFormsView.js":"src/js/views/toggleFormsView.js","./views/loggedView.js":"src/js/views/loggedView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","core-js/stable":"node_modules/core-js/stable/index.js","./model.js":"src/js/model.js","./config.js":"src/js/config.js","./helpers.js":"src/js/helpers.js","./views/recipeView.js":"src/js/views/recipeView.js","./views/categoriesView.js":"src/js/views/categoriesView.js","./views/recipesView.js":"src/js/views/recipesView.js","./views/searchView.js":"src/js/views/searchView.js","./views/loginView.js":"src/js/views/loginView.js","./views/signupView.js":"src/js/views/signupView.js","./views/toggleFormsView.js":"src/js/views/toggleFormsView.js","./views/loggedView.js":"src/js/views/loggedView.js","./views/cartView.js":"src/js/views/cartView.js","./views/favoriteView.js":"src/js/views/favoriteView.js","./views/profileView.js":"src/js/views/profileView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -14546,7 +14996,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37285" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46423" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

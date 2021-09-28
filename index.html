@@ -104,6 +104,8 @@
                   id="profileBtn"
                   type="button"
                   class="btn btn-primary dropdown-item"
+                  data-bs-toggle="modal"
+                  data-bs-target="#profileModal"
                 >
                   <i class="fas fa-user-circle"></i> Profile
                 </button>
@@ -597,9 +599,44 @@
       </div>
 
       <!-- end cancel order -->
-    </main>
 
-    <div class="popup hidden"></div>
+      <!-- Profile Modal -->
+      <div
+      class="modal fade"
+      id="profileModal"
+      tabindex="-1"
+      aria-labelledby="profileModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+            <button
+              type="button"
+              class="btn-close close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="profileContainer">
+      
+
+            <!--End Body -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary close"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </main>
     <!-- End Main -->
 
     <!-- footer -->
@@ -610,6 +647,6 @@
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
 
-    <script defer src="./src/js/controller.js"></script>
+    <script defer type="module" src="./src/js/controller.js"></script>
   </body>
 </html>

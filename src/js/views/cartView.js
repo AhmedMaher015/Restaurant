@@ -1,14 +1,17 @@
 class cartView {
-  _modal = (_parent = document.querySelector('#cartModal'));
+  _modal = document.querySelector('#cartModal');
   _parent = document.querySelector('#cartModal .cart-items');
+  _cartIcon = document.querySelector('#cart-open');
   constructor() {}
 
-  renderCarts(recipes) {
-    if (Array.isArray(recipes) && recipes.length === 0) return;
-    recipes.forEach(recipe => this._createCart(recipe));
+  renderCart(recipe) {
+    if (!recipe) return;
+    // recipes.forEach(recipe => this._createCart(recipe));
+    const html = this._createCart(recipe);
+    this._parent.insertAdjacentHTML('afterbegin', html);
   }
   _createCart(recipe) {
-    const html = `
+    return `
     <li class="cart-item">
       <div class="row">
         <div class="col-8 cart-content">
@@ -34,6 +37,15 @@ class cartView {
       </div>
     </li>
     `;
-    this._parent.insertAdjacentHTML('afterbegin', html);
+  }
+
+  addHandler(handler) {
+    this._cartIcon.addEventListener('click', handler);
+  }
+
+  clear() {
+    this._parent.innerHTML = '';
   }
 }
+
+export default new cartView();

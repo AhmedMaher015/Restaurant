@@ -32,6 +32,7 @@ export const state = {
 export const loadRecipes = async function () {
   try {
     const data = await helpers.getJson(config.API_URL_RECIPES, {
+      headers: {},
       method: 'GET',
     });
     state.recipes = [...data.data.data];
@@ -46,6 +47,7 @@ export const loadRecipes = async function () {
 export const loadRecipe = async function (id) {
   try {
     const data = await helpers.getJson(`${config.API_URL_RECIPES}?_id=${id}`, {
+      headers: {},
       method: 'GET',
     });
     const [recipe] = data.data.data;
@@ -58,6 +60,7 @@ export const loadRecipe = async function (id) {
       imageCover: recipe.imageCover,
       ingredients: recipe.ingredients,
     };
+    return state.recipe;
     // console.log(state.recipe);
   } catch (err) {
     throw err;
@@ -69,6 +72,7 @@ export const loadRecipe = async function (id) {
 export const loadCategories = async function () {
   try {
     const data = await helpers.getJson(config.API_URL_CATEGORIES, {
+      headers: {},
       method: 'GET',
     });
     state.categories = [...data.data.data];
@@ -82,6 +86,7 @@ export const loadSearchResults = async function (recipeName) {
     const data = await helpers.getJson(
       `${config.API_URL_SEARCH}${recipeName}`,
       {
+        headers: {},
         method: 'GET',
       }
     );
@@ -96,15 +101,21 @@ export const loadSearchResults = async function (recipeName) {
   //   console.log(state);
 };
 
-export const loadProfile = async function (data) {
-  const user = data.data.user;
-  state.profile = {
-    name: user.name,
-    email: user.email,
-    photo: user.photo,
-    role: user.role,
-    token: data.token,
-  };
+export const loadProfile = function (data) {
+  try {
+    const user = data.data.user;
+    state.profile = {
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+      role: user.role,
+      token: data.token,
+      id: user._id,
+    };
+    localStorage.setItem('user', JSON.stringify(state.profile));
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const loadOrders = async function () {
@@ -122,27 +133,48 @@ export const loadOrders = async function () {
   }
 };
 
-// export const loadCarts = async function (recipesIds) {
-//   arr.forEach(recipeId => {
-//     try {
-//       const data = await helpers.getJson(
-//         `${config.API_URL_RECIPES}?_id=${id}`,
-//         {
-//           method: 'GET',
-//         }
-//       )
-//       const [recipe] = data.data.data;
-//       state.cartlist.push({
-//         id: recipe._id,
-//         name: recipe.name,
-//         category: recipe.category,
-//         cookingTime: recipe.cookingTime,
-//         price: recipe.price,
-//         imageCover: recipe.imageCover,
-//         ingredients: recipe.ingredients,
-//       });
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   });
-// };
+export const editProfile = async function (userData) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  try {
+    const data = await helpers.getJson(`${config.API_URL_USER}updateMe`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    state.profile = {
+      name: data.user.name,
+      email: data.user.email,
+      photo: data.user.photo,
+      role: data.user.role,
+      token: user.token,
+      id: data.user._id,
+    };
+    localStorage.setItem('user', JSON.stringify(state.profile));
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const changeProfilePassword = async function (userData) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  try {
+    const data = await helpers.getJson(
+      `${config.API_URL_USER}updateMyPassword`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+    loadProfile(data);
+  } catch (err) {
+    throw err;
+  }
+};

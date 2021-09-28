@@ -333,6 +333,50 @@ body {
   color: red;
 }
 
+#profileModal .profile-img {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#profileModal .profile-img img {
+  width: 8em;
+  height: 8rem;
+  height: max-content;
+  border-radius: 50%;
+}
+
+#profileModal p {
+  color: #655a56;
+}
+
+#profileModal p span {
+  color: #111;
+  font-weight: bold;
+}
+
+#profileModal .profile__edit {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#profileModal .profile__info {
+  width: 50%;
+  margin: 10px auto;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.delete-email {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+}
+#deleteEmail {
+  width: 66%;
+}
+
 .footer {
   margin: 20px;
   text-align: center;

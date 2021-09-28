@@ -7,7 +7,9 @@ import {
   loadSearchResults,
   loadProfile,
   loadOrders,
+  editProfile,
   state,
+  changeProfilePassword,
 } from './model.js';
 import * as config from './config.js';
 import * as helpers from './helpers.js';
@@ -19,6 +21,9 @@ import loginView from './views/loginView.js';
 import signupView from './views/signupView.js';
 import toggleFormsView from './views/toggleFormsView.js';
 import loggedView from './views/loggedView.js';
+import cartView from './views/cartView.js';
+import favoriteView from './views/favoriteView.js';
+import profileView from './views/profileView.js';
 import { async } from 'regenerator-runtime/runtime';
 
 const controlRecipes = async function () {
@@ -78,8 +83,8 @@ const controlLogin = async function (userInfo) {
     if (data.status === 'fail') throw new Error(data.message);
     // store on state
     loadProfile(data);
-    // user logged actions
-    loggedView.userLogged(data);
+
+    location.reload();
   } catch (err) {
     loginView.showError(err.message);
   }
@@ -98,11 +103,57 @@ const controlSignup = async function (userInfo) {
     if (data.status === 'fail') throw new Error(data.message);
     // store on state
     loadProfile(data);
-    // user logged actions
-    helpers.userLogged(data);
+
+    location.reload();
   } catch (err) {
     console.log(err.message);
     signupView.showError(err.message);
+  }
+};
+
+const controlCarts = async function () {
+  // get carts Ids
+  const cartIds = JSON.parse(localStorage.getItem('cart')) || [];
+
+  if (!cartIds && cartIds.length === 0) return;
+
+  // clear carts
+  cartView.clear();
+
+  // render carts
+  cartIds.forEach(async id => {
+    const recipe = await loadRecipe(id);
+    cartView.renderCart(recipe);
+  });
+};
+
+const controlFavorites = async function () {
+  // get carts Ids
+  const favoriteIds = JSON.parse(localStorage.getItem('favorite')) || [];
+
+  if (!favoriteIds && favoriteIds.length === 0) return;
+
+  // clear carts
+  favoriteView.clear();
+
+  // render carts
+  favoriteIds.forEach(async id => {
+    const recipe = await loadRecipe(id);
+    favoriteView.renderFavorite(recipe);
+  });
+};
+
+const controlProfile = function () {
+  // render profile
+  profileView.renderProfile();
+
+  try {
+    // edit profile
+    profileView.addHandlerEditProfile(editProfile);
+    // change password
+    profileView.addHandlerChangePassword(changeProfilePassword);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -115,6 +166,12 @@ const init = function () {
   toggleFormsView.addHandler();
   // add handler to search
   searchView.addHandler(controlSearch);
+  // add handler to cart icon
+  cartView.addHandler(controlCarts);
+  // add handler to favorite icon
+  favoriteView.addHandler(controlFavorites);
+  // add handler to profile icon
+  profileView.addHandler(controlProfile);
 };
 
 // check if user logged
