@@ -286,7 +286,7 @@
       <!-- order List Modal -->
       <div
         class="modal fade"
-        id="orderModal"
+        id="ordersModal"
         tabindex="-1"
         aria-labelledby="orderModalLabel"
         aria-hidden="true"
@@ -484,16 +484,16 @@
       <!--details Modal -->
 
       <!-- Order Modal -->
-      <div class="form__container" id="order-modal">
+      <div class="form__container" id="orderModal">
         <div class="form__modal">
-          <button class="close-btn" id="order-close">
+          <button class="close-btn close" id="order-close">
             <i class="fa fa-times"></i>
           </button>
           <div class="modal__form__header">
             <h3>Order Now</h3>
           </div>
           <div class="modal__form__content">
-            <div class="modal__form">
+            <form class="modal__form">
               <div class="order-error"></div>
               <div>
                 <label for="phone-number">Phone Number</label>
@@ -502,10 +502,12 @@
                   id="phone-number"
                   placeholder="Enter Phone Number"
                   class="form-input"
+                  minlength="11"
+                  maxlength="16"
                   required
                 />
               </div>
-              <div class="order-phone-error" style="color: red"></div>
+            
 
               <div>
                 <label for="address">Address</label>
@@ -518,11 +520,11 @@
                   required
                 />
               </div>
-              <div class="order-address-error" style="color: red"></div>
+            
               <!-- data-bs-toggle="modal" -->
               <!-- data-bs-target="#orderResultModal" -->
               <button class="btn btn-md btn-primary order">Order Now</button>
-            </div>
+            </form>
           </div>
         </div>
       </div>

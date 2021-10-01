@@ -2,8 +2,7 @@ class recipeView {
   _parent = document.getElementById('ingredients');
   _modal = document.getElementById('detailsModal');
   _closeBtns = this._modal.querySelectorAll('.close');
-  _favorites = JSON.parse(localStorage.getItem('favorite')) || [];
-  _cart = JSON.parse(localStorage.getItem('cart')) || [];
+
   constructor() {
     // add event to close modal by clicking on window
     window.addEventListener('click', this.closeModalOnClickWindow.bind(this));
@@ -109,35 +108,37 @@ class recipeView {
   }
 
   addToFavorite() {
+    const _favorites = JSON.parse(localStorage.getItem('favorite')) || [];
     const btnLove = document.querySelector('.recipe__love');
     const recipeId = btnLove.value;
     const IsItInFavorites = recipeId => {
       let check = false;
-      this._favorites.forEach(id => {
+      _favorites.forEach(id => {
         if (recipeId === id) check = true;
       });
       return check;
     };
 
     if (IsItInFavorites(recipeId)) return;
-    this._favorites.push(recipeId);
-    localStorage.setItem('favorite', JSON.stringify(this._favorites));
+    _favorites.push(recipeId);
+    localStorage.setItem('favorite', JSON.stringify(_favorites));
     console.log('added to favorite');
   }
 
   addToCart() {
+    const _cart = JSON.parse(localStorage.getItem('cart')) || [];
     const btnCart = document.querySelector('.recipe__cart');
     const recipeId = btnCart.value;
     const IsItInCart = recipeId => {
       let check = false;
-      this._cart.forEach(id => {
+      _cart.forEach(id => {
         if (recipeId === id) check = true;
       });
       return check;
     };
     if (IsItInCart(recipeId)) return;
-    this._cart.push(recipeId);
-    localStorage.setItem('cart', JSON.stringify(this._cart));
+    _cart.push(recipeId);
+    localStorage.setItem('cart', JSON.stringify(_cart));
     console.log('added to cart');
   }
 }

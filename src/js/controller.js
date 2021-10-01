@@ -24,6 +24,8 @@ import loggedView from './views/loggedView.js';
 import cartView from './views/cartView.js';
 import favoriteView from './views/favoriteView.js';
 import profileView from './views/profileView.js';
+import orderView from './views/orderView.js';
+import orderResultView from './views/orderResultView.js';
 import { async } from 'regenerator-runtime/runtime';
 
 const controlRecipes = async function () {
@@ -157,6 +159,40 @@ const controlProfile = function () {
   }
 };
 
+const showOrderModal = function () {
+  // store carts on local storage
+  cartView.storeOrders();
+  // show order modal
+  orderView.showModal();
+};
+
+const controlOrder = async function (orderInfo) {
+  const profile = JSON.parse(localStorage.getItem('user'));
+  try {
+    const data = await helpers.getJson(config.API_URL_ORDERS, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${profile.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderInfo),
+    });
+
+    // close order modal
+    orderView.closeModal();
+
+    // reset cart
+    cartView.resetCart();
+
+    // show order result
+    orderResultView.showModal();
+    // render order result
+    orderResultView.renderResultOrder(data.data);
+  } catch (err) {
+    console.error(err);
+    orderView.renderError(err.message);
+  }
+};
 const init = function () {
   // add handler to login
   loginView.addHandler(controlLogin);
@@ -168,10 +204,14 @@ const init = function () {
   searchView.addHandler(controlSearch);
   // add handler to cart icon
   cartView.addHandler(controlCarts);
+  // add handler to order now btn
+  cartView.addHandlerOrderNow(showOrderModal);
   // add handler to favorite icon
   favoriteView.addHandler(controlFavorites);
   // add handler to profile icon
   profileView.addHandler(controlProfile);
+  // add handler to order btn
+  orderView.addHandler(controlOrder);
 };
 
 // check if user logged
