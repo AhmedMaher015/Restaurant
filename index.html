@@ -111,11 +111,7 @@
                 </button>
               </li>
               <li class="nav-item user signoutBtnContainer">
-                <button
-                  id="signoutBtn"
-                  type="button"
-                  class="btn btn-primary"
-                >
+                <button id="signoutBtn" type="button" class="btn btn-primary">
                   Sign Out
                 </button>
               </li>
@@ -128,15 +124,21 @@
     <!-- main -->
     <main class="main">
       <div class="container">
-
         <!-- search section -->
         <div class="search">
           <div class="search__form">
-            <input type="search" name="search" class="search__field" autocomplete="off" placeholder="search about recipe">
-            <button class="search__btn" type="submit"> <i class="fas fa-search"></i></button>
-          </div>          
-          <div class="row search__results">
+            <input
+              type="search"
+              name="search"
+              class="search__field"
+              autocomplete="off"
+              placeholder="search about recipe"
+            />
+            <button class="search__btn" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
           </div>
+          <div class="row search__results"></div>
         </div>
 
         <!-- Our Popular Food -->
@@ -155,8 +157,8 @@
           <div class="col-12 recipes">
             <div class="row recipes-container"></div>
             <div class="row pages">
-                <button class="pages__btn--prev">prev</button>
-                <button class="pages__btn--next">next</button>
+              <button class="pages__btn--prev">prev</button>
+              <button class="pages__btn--next">next</button>
             </div>
           </div>
         </div>
@@ -165,7 +167,6 @@
 
         <!-- End Cuisines -->
 
-        
         <!-- Mobile App -->
 
         <div class="row mobile">
@@ -196,7 +197,6 @@
 
         <!-- End Container -->
       </div>
-
 
       <!-- Modals -->
 
@@ -437,9 +437,7 @@
                 <div class="password-error hidden">Incorrect Password</div>
               </div>
               <button class="btn submit-btn btn-md btn-primary">Sign In</button>
-              <p class="toggle-modal">
-                signUp if you didn't have an account
-              </p>
+              <p class="toggle-modal">signUp if you didn't have an account</p>
             </form>
           </div>
         </div>
@@ -507,7 +505,6 @@
                   required
                 />
               </div>
-            
 
               <div>
                 <label for="address">Address</label>
@@ -520,7 +517,7 @@
                   required
                 />
               </div>
-            
+
               <!-- data-bs-toggle="modal" -->
               <!-- data-bs-target="#orderResultModal" -->
               <button class="btn btn-md btn-primary order">Order Now</button>
@@ -604,50 +601,54 @@
 
       <!-- Profile Modal -->
       <div
-      class="modal fade"
-      id="profileModal"
-      tabindex="-1"
-      aria-labelledby="profileModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
-            <button
-              type="button"
-              class="btn-close close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body" id="profileContainer">
-      
-
-            <!--End Body -->
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary close"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
+        class="modal fade"
+        id="profileModal"
+        tabindex="-1"
+        aria-labelledby="profileModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+              <button
+                type="button"
+                class="btn-close close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="profileContainer">
+              <!--End Body -->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary close"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </main>
     <!-- End Main -->
 
     <!-- footer -->
     <footer class="footer">Enjoy Eating Our Meals</footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" 
-    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" 
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+      integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+      integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+      crossorigin="anonymous"
+    ></script>
 
     <script defer type="module" src="./src/js/controller.js"></script>
   </body>

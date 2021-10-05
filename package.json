@@ -1,32 +1,32 @@
 {
   "name": "restaurant",
   "version": "1.0.0",
-  "homepage": "https://ahmedmaher015.github.io/Restaurant/", 
   "description": "order food",
   "main": "controller.js",
-  "scripts": {
-    "start": "parcel index.html",
-    "predeploy": "rm -rf dist && parcel build index.html",
-    "deploy": "gh-pages -d dist",
-    "build": "parcel build index.html"
-  },
+  "homepage": "https://github.com/AhmedMaher015/Restaurant.git",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AhmedMaher015/Restaurant.git"
+    "url": "https://github.com/AhmedMaher015/Restaurant.git"
   },
   "author": "AhmedMaher",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AhmedMaher015/Restaurant/issues"
   },
+  "scripts": {
+    "start": "parcel index.html",
+    "predeploy": "rm -rf dist && parcel build index.html https://github.com/AhmedMaher015/Restaurant.git /parcel-gh-pages-deploy",
+    "deploy": "gh-pages -d dist",
+    "build": "parcel build index.html"
+  },
   "dependencies": {
     "bootstrap": "^5.1.1",
-    "core-js": "^3.17.3",
+    "core-js": "^3.18.1",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.41.1"
   },
   "devDependencies": {
     "gh-pages": "^3.2.3",
-    "parcel-bundler": "^1.12.3"
+    "parcel-bundler": "^1.12.5"
   }
 }
