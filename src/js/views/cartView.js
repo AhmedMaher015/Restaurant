@@ -5,17 +5,16 @@ class cartView {
 
   constructor() {}
 
-  renderCart(recipe) {
+  renderCarts(recipe) {
     if (!recipe) return;
-    const html = this._createCart(recipe);
-    this._parent.insertAdjacentHTML('afterbegin', html);
+    this._parent.insertAdjacentHTML('afterbegin', this._createCart(recipe));
     this.addHandlerRemove();
-    this.addHandlerAmount();
+    this.addHandlerAmount(recipe);
     this.totalSalary();
   }
   _createCart(recipe) {
     return `
-    <li class="cart-item">
+    <li class="cart-item" id="recipe_${recipe.id}">
       <div class="row">
         <div class="col-8 cart-content">
           <h3>${recipe.name}</h3>
@@ -56,21 +55,18 @@ class cartView {
     const orderNowBtn = this._modal.querySelector('#orderNow');
     orderNowBtn.addEventListener('click', handler);
   }
-  addHandlerAmount() {
-    const amountInputs = this._parent.querySelectorAll('.amount');
-    amountInputs.forEach(input =>
-      input.addEventListener('input', e => {
-        let value = Number(e.target.value);
-        const btn = e.path[0];
-        if (!value || value < 1) {
-          btn.value = '1';
-        } else {
-          btn.value = Math.round(value);
-        }
-        this.totalSalary();
-      })
-    );
-    const subtractBtns = this._parent.querySelectorAll('.subtract');
+  addHandlerAmount(recipe) {
+    const amountInput = document.querySelector(`#recipe_${recipe.id} .amount`);
+    amountInput.addEventListener('input', e => {
+      let value = Number(e.target.value);
+      const btn = e.target;
+      if (!value || value < 1) {
+        btn.value = '1';
+      } else {
+        btn.value = Math.round(value);
+      }
+      this.totalSalary();
+    });
   }
 
   clear() {
@@ -94,9 +90,10 @@ class cartView {
   remove(e) {
     const cartIds = JSON.parse(localStorage.getItem('cart')) || [];
     const cartBtn = e.target;
+    const path = e.composedPath();
     cartIds.pop(cartBtn.value);
     localStorage.setItem('cart', JSON.stringify(cartIds));
-    e.path[4].remove();
+    path[4].remove();
     this.totalSalary();
   }
 
@@ -115,6 +112,7 @@ class cartView {
     const totalSalary = document.querySelector('#cartModal .total-salary span');
     totalSalary.textContent = '0$';
     localStorage.setItem('cart', JSON.stringify([]));
+    this.clear();
   }
 }
 

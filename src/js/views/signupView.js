@@ -19,7 +19,8 @@ class signupView {
   }
 
   showModal() {
-    this._modal.classList.add('show__modal');
+    const _modal = document.getElementById('signup-modal');
+    _modal.classList.add('show__modal');
   }
 
   closeModal() {

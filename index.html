@@ -92,9 +92,9 @@
                 <button
                   type="button"
                   class="btn btn-primary dropdown-item"
-                  id="orderBtn"
+                  id="ordersBtn"
                   data-bs-toggle="modal"
-                  data-bs-target="#orderModal"
+                  data-bs-target="#ordersModal"
                 >
                   <i class="fas fa-hamburger"></i> Orders
                 </button>
@@ -156,9 +156,9 @@
           <!-- recipes -->
           <div class="col-12 recipes">
             <div class="row recipes-container"></div>
-            <div class="row pages">
-              <button class="pages__btn--prev">prev</button>
-              <button class="pages__btn--next">next</button>
+            <div class="row">
+              <div class="pages">
+                
             </div>
           </div>
         </div>
@@ -302,7 +302,9 @@
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body">
+              <ul></ul>
+            </div>
             <div class="modal-footer">
               <button
                 type="button"

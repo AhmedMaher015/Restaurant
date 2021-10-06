@@ -29,14 +29,18 @@ export const state = {
   },
 };
 
-export const loadRecipes = async function () {
+export const loadRecipes = async function (page = 1) {
   try {
-    const data = await helpers.getJson(config.API_URL_RECIPES, {
-      headers: {},
-      method: 'GET',
-    });
+    const data = await helpers.getJson(
+      `${config.API_URL_RECIPES}?limit=9&page=${page}`,
+      {
+        headers: {},
+        method: 'GET',
+      }
+    );
     state.recipes = [...data.data.data];
     state.popular = state.recipes.slice(0, 4);
+    return data.docsCount;
   } catch (err) {
     throw err;
   }
@@ -119,15 +123,17 @@ export const loadProfile = function (data) {
 };
 
 export const loadOrders = async function () {
+  const token = JSON.parse(localStorage.getItem('user')).token;
   try {
     const data = await helpers.getJson(config.API_URL_ORDERS, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${state.profile.token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
     state.orderslist = [...data.data];
+    return state.orderslist;
   } catch (err) {
     throw err;
   }
@@ -178,3 +184,17 @@ export const changeProfilePassword = async function (userData) {
     throw err;
   }
 };
+
+// export const loadCarts = async function () {
+//   const cartIds = JSON.parse(localStorage.getItem('cart')) || [];
+
+//   if (!cartIds && cartIds.length === 0) return;
+//   const carts = [];
+//   // render carts
+//   await cartIds.forEach(async id => {
+//     const recipe = await loadRecipe(id);
+//     carts.push(recipe);
+//   });
+
+//   return carts;
+// };

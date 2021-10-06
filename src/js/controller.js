@@ -26,12 +26,13 @@ import favoriteView from './views/favoriteView.js';
 import profileView from './views/profileView.js';
 import orderView from './views/orderView.js';
 import orderResultView from './views/orderResultView.js';
+import ordersView from './views/ordersView.js';
+import orderCancelView from './views/orderCancelView.js';
 import { async } from 'regenerator-runtime/runtime';
 
 const controlRecipes = async function () {
   // load all recipes
-  await loadRecipes();
-
+  const docsCount = await loadRecipes();
   // render all recipes
   recipesView.renderRecipes(state.recipes);
 
@@ -46,6 +47,25 @@ const controlRecipes = async function () {
 
   // render Categories
   categoriesView.renderCategorys(state.categories);
+
+  // render pagination
+  recipesView.renderPagination(1, docsCount);
+
+  // add event to pagination btns
+  recipesView.addHandlerPagination(controlPagination);
+};
+
+const controlPagination = async function (page) {
+  // load all recipes
+  const docsCount = await loadRecipes(page);
+  // render all recipes
+  recipesView.renderRecipes(state.recipes);
+  // add event to recipes
+  recipesView.addHandler(controlRecipe);
+  // render pagination
+  recipesView.renderPagination(page, docsCount);
+  // add event to pagination btns
+  recipesView.addHandlerPagination(controlPagination);
 };
 
 const controlRecipe = async function (e) {
@@ -58,6 +78,13 @@ const controlRecipe = async function (e) {
 
   // show modal
   recipeView.showRecipeModal();
+
+  if (!helpers.IsUserLogged()) {
+    recipeView.addHandlerNoUserLogged(signupView.showModal);
+    return;
+  }
+  // add handler order recipe
+  recipeView.addHandlerOrderRecipe(orderView.showModal);
 };
 
 const controlSearch = function (searchWord) {
@@ -114,18 +141,13 @@ const controlSignup = async function (userInfo) {
 };
 
 const controlCarts = async function () {
-  // get carts Ids
   const cartIds = JSON.parse(localStorage.getItem('cart')) || [];
-
   if (!cartIds && cartIds.length === 0) return;
-
-  // clear carts
   cartView.clear();
-
-  // render carts
   cartIds.forEach(async id => {
     const recipe = await loadRecipe(id);
-    cartView.renderCart(recipe);
+    // render cart
+    cartView.renderCarts(recipe);
   });
 };
 
@@ -177,8 +199,7 @@ const controlOrder = async function (orderInfo) {
       },
       body: JSON.stringify(orderInfo),
     });
-
-    // close order modal
+    // close order
     orderView.closeModal();
 
     // reset cart
@@ -191,6 +212,44 @@ const controlOrder = async function (orderInfo) {
   } catch (err) {
     console.error(err);
     orderView.renderError(err.message);
+  }
+};
+
+const makeSpecialOrder = function () {
+  // show order modal
+  orderView.showModal();
+};
+
+const controlOrders = async function () {
+  // get orders
+  const orders = await loadOrders();
+
+  // render orders
+  ordersView.renderOrders(orders);
+
+  // add handlers to cancel order
+  ordersView.addHandlerRemove(controlOrderCancel);
+};
+
+const controlOrderCancel = async function (orderId) {
+  const token = JSON.parse(localStorage.getItem('user')).token;
+  // show order cancel modal
+  orderCancelView.showModal();
+  try {
+    const data = await helpers.getJson(
+      `https://panda-restaurant.herokuapp.com/api/v1/orders/cancelOrder/${orderId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    orderCancelView.renderSuccess();
+  } catch (err) {
+    orderCancelView.renderError(err.message);
   }
 };
 const init = function () {
@@ -212,6 +271,8 @@ const init = function () {
   profileView.addHandler(controlProfile);
   // add handler to order btn
   orderView.addHandler(controlOrder);
+  // add handler to orders btn click
+  ordersView.addHandler(controlOrders);
 };
 
 // check if user logged

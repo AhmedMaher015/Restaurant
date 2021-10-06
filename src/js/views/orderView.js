@@ -10,7 +10,8 @@ class orderView {
   }
 
   showModal() {
-    this._modal.classList.add('show__modal');
+    const _modal = document.querySelector('#orderModal');
+    _modal.classList.add('show__modal');
   }
 
   closeModal() {

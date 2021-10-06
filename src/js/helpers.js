@@ -8,3 +8,8 @@ export const getJson = async function (url, requestOptions) {
     throw err;
   }
 };
+
+export const IsUserLogged = function () {
+  if (localStorage.getItem('user') == null) return false;
+  return true;
+};

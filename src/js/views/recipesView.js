@@ -1,6 +1,7 @@
 class recipesView {
   _parent = document.querySelector('.recipes-container');
   _parentPopular = document.querySelector('.popular');
+  _parentPagination = document.querySelector('.pages');
   constructor() {
     this.createSpinner();
   }
@@ -17,6 +18,47 @@ class recipesView {
     recipes.forEach(recipe => this._createPopular(recipe));
   }
 
+  renderPagination(currentPage, restRecipes) {
+    this._parentPagination.innerHTML = '';
+    const prev = `<button class="pages__btn--prev" value="0"><<</button>`;
+    const next = ` <button class="pages__btn--next" value="0">>></button>`;
+    currentPage = Number(currentPage);
+    // no rest recipes
+    if (currentPage === 1 && restRecipes === 0) {
+      return;
+    }
+    if (currentPage === 1 && restRecipes > 0) {
+      const next = ` <button class="pages__btn--next" value=${++currentPage}>>> ${currentPage}</button>`;
+      this._parentPagination.insertAdjacentHTML('afterbegin', next);
+      return;
+    }
+
+    if (currentPage > 1 && restRecipes === 0) {
+      const prev = `<button class="pages__btn--prev" value=${--currentPage}><< ${currentPage}</button>`;
+      this._parentPagination.insertAdjacentHTML('afterbegin', prev);
+      return;
+    }
+
+    if (currentPage > 1 && restRecipes > 0) {
+      let nextValue = currentPage + 1,
+        prevValue = currentPage - 1;
+      const next = ` <button class="pages__btn--next" value=${nextValue}>>> ${nextValue}</button>`;
+      const prev = `<button class="pages__btn--prev" value=${prevValue}><< ${prevValue}</button>`;
+      this._parentPagination.insertAdjacentHTML('afterbegin', prev);
+      this._parentPagination.insertAdjacentHTML('afterbegin', next);
+      return;
+    }
+  }
+
+  addHandlerPagination(handler) {
+    const btns = document.querySelectorAll('.pages button');
+    if (btns == null) return;
+    btns.forEach(btn =>
+      btn.addEventListener('click', e => {
+        handler(e.target.value);
+      })
+    );
+  }
   _createRecipe(recipe) {
     const html = `
       <div class="col-sm-12 col-md-6 col-lg-4">

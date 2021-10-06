@@ -1,3 +1,5 @@
+import * as helpers from '../helpers.js';
+
 class recipeView {
   _parent = document.getElementById('ingredients');
   _modal = document.getElementById('detailsModal');
@@ -74,6 +76,12 @@ class recipeView {
     this._parent.innerHTML = html;
     // add handler to favorite and cart btns
     this.addHandlerToBtns();
+    // add handler to amount input add and subtract
+    this.incAmount();
+    this.decAmount();
+
+    this.addHandlerRecipeAmount();
+    // add handlers to
   }
 
   _createIngredientLi = function (el) {
@@ -108,6 +116,9 @@ class recipeView {
   }
 
   addToFavorite() {
+    if (!helpers.IsUserLogged()) {
+      return;
+    }
     const _favorites = JSON.parse(localStorage.getItem('favorite')) || [];
     const btnLove = document.querySelector('.recipe__love');
     const recipeId = btnLove.value;
@@ -126,6 +137,9 @@ class recipeView {
   }
 
   addToCart() {
+    if (!helpers.IsUserLogged()) {
+      return;
+    }
     const _cart = JSON.parse(localStorage.getItem('cart')) || [];
     const btnCart = document.querySelector('.recipe__cart');
     const recipeId = btnCart.value;
@@ -140,6 +154,74 @@ class recipeView {
     _cart.push(recipeId);
     localStorage.setItem('cart', JSON.stringify(_cart));
     console.log('added to cart');
+  }
+
+  makeOrder() {
+    const recipeOrderBtn = this._parent.querySelector('.recipe__order');
+    const recipeAmount = this._parent.querySelector('.recipe__amount');
+    const orderItems = [
+      {
+        recipeId: recipeOrderBtn.value,
+        amount: recipeAmount.value,
+      },
+    ];
+    localStorage.setItem('order', JSON.stringify(orderItems));
+  }
+
+  addHandlerOrderRecipe(handler) {
+    if (!helpers.IsUserLogged()) {
+      return;
+    }
+    const recipeOrderBtn = this._parent.querySelector('.recipe__order');
+    recipeOrderBtn.addEventListener('click', () => {
+      this.makeOrder();
+      this.closeRecipeModal();
+      handler();
+    });
+  }
+
+  addHandlerRecipeAmount() {
+    const amountInput = this._parent.querySelector(`.recipe__amount`);
+    amountInput.addEventListener('input', this._handleAmountValue.bind(this));
+  }
+
+  _handleAmountValue() {
+    const label = this._parent.querySelector(`.recipe__amount`);
+    let value = Number(label.value);
+    if (!value || value < 1) {
+      label.value = '1';
+    } else {
+      label.value = Math.round(value);
+    }
+  }
+
+  incAmount() {
+    const amountInput = this._parent.querySelector(`.recipe__amount`);
+    const add = this._parent.querySelector('.add');
+    add.addEventListener('click', () => {
+      amountInput.value = Number(amountInput.value) + 1;
+      this._handleAmountValue();
+    });
+  }
+  decAmount() {
+    const amountInput = this._parent.querySelector(`.recipe__amount`);
+    const subtract = this._parent.querySelector('.subtract');
+    subtract.addEventListener('click', () => {
+      amountInput.value = Number(amountInput.value) - 1;
+      this._handleAmountValue();
+    });
+  }
+  addHandlerNoUserLogged(handler) {
+    const recipeOrderBtn = this._parent.querySelector('.recipe__order');
+    const btnCart = document.querySelector('.recipe__cart');
+    const btnLove = document.querySelector('.recipe__love');
+    const btns = [recipeOrderBtn, btnCart, btnLove];
+    btns.forEach(btn =>
+      btn.addEventListener('click', () => {
+        this.closeRecipeModal();
+        handler();
+      })
+    );
   }
 }
 
