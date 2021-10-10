@@ -11,7 +11,10 @@ export const state = {
     price: '',
     ingredients: '',
   },
-  categories: [],
+  categories: {
+    target: '',
+    list: [],
+  },
   recipes: [],
   popular: [],
   favoriteList: [],
@@ -29,10 +32,12 @@ export const state = {
   },
 };
 
-export const loadRecipes = async function (page = 1) {
+export const loadRecipes = async function (limit = 9, page = 1) {
   try {
     const data = await helpers.getJson(
-      `${config.API_URL_RECIPES}?limit=9&page=${page}`,
+      `${config.API_URL_RECIPES}?limit=${limit}&page=${page}${
+        state.categories.target && `&category=${state.categories.target}`
+      }`,
       {
         headers: {},
         method: 'GET',
@@ -40,7 +45,9 @@ export const loadRecipes = async function (page = 1) {
     );
     state.recipes = [...data.data.data];
     state.popular = state.recipes.slice(0, 4);
-    return data.docsCount;
+    const results = data.results;
+    const docsCount = data.docsCount;
+    return results < limit ? 0 : docsCount;
   } catch (err) {
     throw err;
   }
@@ -79,11 +86,25 @@ export const loadCategories = async function () {
       headers: {},
       method: 'GET',
     });
-    state.categories = [...data.data.data];
+    state.categories.list = [...data.data.data];
   } catch (err) {
     throw err;
   }
 };
+
+// export const loadCarts = async function () {
+//   const carts = JSON.parse(localStorage.getItem('cart')) || [];
+//   try {
+//     state.cartlist = await carts.map(async id => {
+//       const recipe = await loadRecipe(id);
+//       return recipe;
+//     });
+//     // state.cartlist = [...carts];
+//     return state.cartlist;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 
 export const loadSearchResults = async function (recipeName) {
   try {
@@ -140,24 +161,24 @@ export const loadOrders = async function () {
 };
 
 export const editProfile = async function (userData) {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const token = JSON.parse(localStorage.getItem('user')).token;
   try {
     const data = await helpers.getJson(`${config.API_URL_USER}updateMe`, {
       method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
     });
-
+    const user = data.user;
     state.profile = {
-      name: data.user.name,
-      email: data.user.email,
-      photo: data.user.photo,
-      role: data.user.role,
-      token: user.token,
-      id: data.user._id,
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+      role: user.role,
+      token: token,
+      id: user._id,
     };
     localStorage.setItem('user', JSON.stringify(state.profile));
   } catch (err) {
@@ -166,20 +187,46 @@ export const editProfile = async function (userData) {
 };
 
 export const changeProfilePassword = async function (userData) {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const token = JSON.parse(localStorage.getItem('user')).token;
   try {
     const data = await helpers.getJson(
       `${config.API_URL_USER}updateMyPassword`,
       {
         method: 'PATCH',
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       }
     );
-    loadProfile(data);
+
+    const user = data.data.user;
+    state.profile = {
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
+      role: user.role,
+      token: data.token,
+      id: user._id,
+    };
+    localStorage.setItem('user', JSON.stringify(state.profile));
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const deleteEmail = async function () {
+  const token = JSON.parse(localStorage.getItem('user')).token;
+  try {
+    const data = await helpers.getJson(`${config.API_URL_USER}deleteMe`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(data);
   } catch (err) {
     throw err;
   }

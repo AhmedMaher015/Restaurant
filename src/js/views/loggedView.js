@@ -27,6 +27,8 @@ class loggedView {
 
   userSignout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('cart');
+    localStorage.removeItem('favorite');
     location.reload();
   }
 }

@@ -116,6 +116,9 @@ class recipeView {
   }
 
   addToFavorite() {
+    const addtoFavoriteMessage = document.querySelector(
+      '.addToFavorite-message'
+    );
     if (!helpers.IsUserLogged()) {
       return;
     }
@@ -130,13 +133,17 @@ class recipeView {
       return check;
     };
 
-    if (IsItInFavorites(recipeId)) return;
+    if (IsItInFavorites(recipeId)) {
+      addtoFavoriteMessage.textContent = 'Already in Favorite';
+      return;
+    }
     _favorites.push(recipeId);
     localStorage.setItem('favorite', JSON.stringify(_favorites));
-    console.log('added to favorite');
+    addtoFavoriteMessage.textContent = 'Added to Favorite';
   }
 
   addToCart() {
+    const addtoCartMessage = document.querySelector('.addToCart-message');
     if (!helpers.IsUserLogged()) {
       return;
     }
@@ -150,10 +157,13 @@ class recipeView {
       });
       return check;
     };
-    if (IsItInCart(recipeId)) return;
+    if (IsItInCart(recipeId)) {
+      addtoCartMessage.textContent = 'Already in Cart';
+      return;
+    }
     _cart.push(recipeId);
     localStorage.setItem('cart', JSON.stringify(_cart));
-    console.log('added to cart');
+    addtoCartMessage.textContent = 'Added to Cart';
   }
 
   makeOrder() {

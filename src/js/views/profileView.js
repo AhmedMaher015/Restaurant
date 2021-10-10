@@ -31,7 +31,7 @@ class profileView {
 <div class="modal__form__content profile__edit--info hidden">
   <!-- <p>Put you data to sign up </p> -->
   <form class="modal__form">
-    <div class="profile-error"></div>
+  <div class="profile-error"></div>
     <div>
       <label for="profileEmail">Email</label>
       <input
@@ -53,7 +53,7 @@ class profileView {
       <input
         type="text"
         id="profileName"
-        value = ${profile.name}
+        value="${profile.name}"
         placeholder="Enter Name"
         class="form-input"
         minlength="8"
@@ -72,11 +72,24 @@ class profileView {
   <form class="modal__form">
     <div class="profile-error"></div>
     <div>
+    <label for="profileCurrentPassword">Current Password</label>
+    <input
+      type="password"
+      id="profileCurrentPassword"
+      placeholder="Enter Current Password"
+      class="form-input"
+      minlength="8"
+      autocomplete="off"
+      required
+    />
+    
+  </div>
+    <div>
       <label for="profilePassword">Password</label>
       <input
         type="password"
         id="profilePassword"
-        placeholder="Enter Password"
+        placeholder="Enter New Password"
         class="form-input"
         minlength="8"
         autocomplete="off"
@@ -176,7 +189,6 @@ class profileView {
         email: email.value,
         name: name.value,
       });
-      this.renderProfile();
     });
   }
 
@@ -184,16 +196,37 @@ class profileView {
     const editPassword = document.querySelector(
       '#profileModal .profile__edit--password form'
     );
+    const currentPassword = document.getElementById('profileCurrentPassword');
     const password = document.getElementById('profilePassword');
     const passwordConfirm = document.getElementById('profilePasswordConfirm');
     editPassword.addEventListener('submit', e => {
       e.preventDefault();
       handler({
+        passwordCurrent: currentPassword.value,
         password: password.value,
         passwordConfirm: passwordConfirm.value,
       });
-      this.renderProfile();
     });
+  }
+
+  addHandlerDeleteEmail(handler) {
+    const deleteEmailBtn = document.getElementById('deleteEmail');
+    deleteEmailBtn.addEventListener('click', () => {
+      handler();
+    });
+  }
+
+  renderEditProfileError(err) {
+    const editInfoError = document.querySelector(
+      '#profileModal .profile__edit--info form .profile-error'
+    );
+    editInfoError.textContent = err;
+  }
+  renderChangePasswordError(err) {
+    const changePasswordError = document.querySelector(
+      '#profileModal .profile__edit--password form .profile-error'
+    );
+    changePasswordError.textContent = err;
   }
 }
 

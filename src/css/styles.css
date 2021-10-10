@@ -190,23 +190,44 @@ body {
 .pages {
   width: 100%;
   background-color: inherit;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  align-items: center;
   margin: 10px auto;
   padding: 20px;
+  gap: 10px;
 }
-.pages__btn--prev,
-.pages__btn--next {
+
+.pages button {
+  background-color: #fff;
+  color: #222;
+  width: 70px;
   font-size: 1.2em;
+  border-radius: 10px;
+}
+
+.pages button:active {
+  transform: scale(0.95, 0.95);
+}
+.pages button:active {
+  transform: scale(1.05, 1.05);
+}
+.pages button:hover,
+.pages button:active {
+  box-shadow: 5px 5px 3px #aaa;
+}
+/* .pages__btn--prev,
+.pages__btn--next {
   width: 100px;
   background-color: #fff;
   color: #333;
   padding: 10px 20px;
   border-radius: 10px;
-}
+} */
 
-.pages__btn--prev:hover,
+/* .pages__btn--prev:hover,
 .pages__btn--next:hover {
-  box-shadow: 5px 5px 3px #ccc;
-  transform: scale(1.05, 1.05);
 }
 
 .pages__btn--prev:active,
@@ -221,7 +242,7 @@ body {
 
 .pages__btn--next {
   float: right;
-}
+} */
 
 .recipe .recipe-content {
   margin: auto 5px;
@@ -430,6 +451,9 @@ body {
   }
   .main .container .cuisines .categories .btn {
     margin: 5px;
+  }
+  .pages {
+    justify-content: flex-start;
   }
   .search {
     width: 100%;

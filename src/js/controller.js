@@ -7,14 +7,17 @@ import {
   loadSearchResults,
   loadProfile,
   loadOrders,
-  editProfile,
+  loadCarts,
   state,
+  editProfile,
   changeProfilePassword,
+  deleteEmail,
 } from './model.js';
 import * as config from './config.js';
 import * as helpers from './helpers.js';
 import recipeView from './views/recipeView.js';
 import categoriesView from './views/categoriesView.js';
+import paginationView from './views/paginationView';
 import recipesView from './views/recipesView.js';
 import searchView from './views/searchView.js';
 import loginView from './views/loginView.js';
@@ -28,11 +31,12 @@ import orderView from './views/orderView.js';
 import orderResultView from './views/orderResultView.js';
 import ordersView from './views/ordersView.js';
 import orderCancelView from './views/orderCancelView.js';
-import { async } from 'regenerator-runtime/runtime';
+// import { async } from 'regenerator-runtime/runtime';
 
+const LIMIT = 6;
 const controlRecipes = async function () {
   // load all recipes
-  const docsCount = await loadRecipes();
+  const docsCount = await loadRecipes(LIMIT);
   // render all recipes
   recipesView.renderRecipes(state.recipes);
 
@@ -46,26 +50,45 @@ const controlRecipes = async function () {
   await loadCategories();
 
   // render Categories
-  categoriesView.renderCategorys(state.categories);
+  categoriesView.renderCategorys(state.categories.list);
+
+  // add Handler to categories btns
+  categoriesView.addHandler(controlCategories);
 
   // render pagination
-  recipesView.renderPagination(1, docsCount);
+  paginationView.renderPagination(LIMIT, docsCount);
 
   // add event to pagination btns
-  recipesView.addHandlerPagination(controlPagination);
+  paginationView.addHandlerPagination(controlPagination);
 };
 
+const controlCategories = async function (categoryName) {
+  state.categories.target = categoryName;
+  const docsCount = await loadRecipes(LIMIT);
+  console.log(docsCount);
+  // render all category list
+  recipesView.renderRecipes(state.recipes);
+
+  // add event to recipes
+  recipesView.addHandler(controlRecipe);
+
+  // render pagination
+  paginationView.renderPagination(LIMIT, docsCount);
+
+  // add event to pagination btns
+  paginationView.addHandlerPagination(controlPagination);
+};
 const controlPagination = async function (page) {
   // load all recipes
-  const docsCount = await loadRecipes(page);
+  const docsCount = await loadRecipes(LIMIT, page);
   // render all recipes
   recipesView.renderRecipes(state.recipes);
   // add event to recipes
   recipesView.addHandler(controlRecipe);
   // render pagination
-  recipesView.renderPagination(page, docsCount);
+  paginationView.renderPagination(LIMIT, docsCount);
   // add event to pagination btns
-  recipesView.addHandlerPagination(controlPagination);
+  paginationView.addHandlerPagination(controlPagination);
 };
 
 const controlRecipe = async function (e) {
@@ -128,11 +151,11 @@ const controlSignup = async function (userInfo) {
       },
       body: JSON.stringify(userInfo),
     });
+    // if (!res.ok) throw new Error('Please , Try after some minutes');
     const data = await res.json();
     if (data.status === 'fail') throw new Error(data.message);
     // store on state
     loadProfile(data);
-
     location.reload();
   } catch (err) {
     console.log(err.message);
@@ -170,15 +193,26 @@ const controlFavorites = async function () {
 const controlProfile = function () {
   // render profile
   profileView.renderProfile();
-
+  profileView.addHandlerDeleteEmail(controlDeleteEmail);
   try {
     // edit profile
     profileView.addHandlerEditProfile(editProfile);
+  } catch (err) {
+    console.error(err);
+    profileView.renderEditProfileError(err.message);
+  }
+  try {
     // change password
     profileView.addHandlerChangePassword(changeProfilePassword);
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    profileView.renderChangePasswordError(err.message);
   }
+};
+
+const controlDeleteEmail = () => {
+  deleteEmail();
+  loggedView.userSignout();
 };
 
 const showOrderModal = function () {
@@ -283,3 +317,8 @@ controlRecipes();
 
 // add handlers
 init();
+
+// // console.log(loadCarts());
+// const carts = loadCarts()
+//   .then(data => data)
+//   .then(carts => console.log(carts));

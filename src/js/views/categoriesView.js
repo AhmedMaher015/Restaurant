@@ -17,6 +17,13 @@ class categoriesView {
             <button class="btn btn-outline-danger" value=${category._id}>${category.name}</button>
         `;
   };
+
+  addHandler(handler) {
+    const btns = document.querySelectorAll('.categories button');
+    btns.forEach(btn =>
+      btn.addEventListener('click', e => handler(e.target.textContent))
+    );
+  }
 }
 
 export default new categoriesView();
