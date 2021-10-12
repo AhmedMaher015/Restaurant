@@ -8,6 +8,7 @@ import {
   loadProfile,
   loadOrders,
   loadCarts,
+  loadFavorits,
   state,
   editProfile,
   changeProfilePassword,
@@ -65,7 +66,6 @@ const controlRecipes = async function () {
 const controlCategories = async function (categoryName) {
   state.categories.target = categoryName;
   const docsCount = await loadRecipes(LIMIT);
-  console.log(docsCount);
   // render all category list
   recipesView.renderRecipes(state.recipes);
 
@@ -164,30 +164,12 @@ const controlSignup = async function (userInfo) {
 };
 
 const controlCarts = async function () {
-  const cartIds = JSON.parse(localStorage.getItem('cart')) || [];
-  if (!cartIds && cartIds.length === 0) return;
-  cartView.clear();
-  cartIds.forEach(async id => {
-    const recipe = await loadRecipe(id);
-    // render cart
-    cartView.renderCarts(recipe);
-  });
+  loadCarts().then(carts => cartView.renderCarts(carts));
 };
 
 const controlFavorites = async function () {
-  // get carts Ids
-  const favoriteIds = JSON.parse(localStorage.getItem('favorite')) || [];
-
-  if (!favoriteIds && favoriteIds.length === 0) return;
-
-  // clear carts
-  favoriteView.clear();
-
-  // render carts
-  favoriteIds.forEach(async id => {
-    const recipe = await loadRecipe(id);
-    favoriteView.renderFavorite(recipe);
-  });
+  // render favorites
+  loadFavorits().then(favorites => favoriteView.renderFavorite(favorites));
 };
 
 const controlProfile = function () {
@@ -318,7 +300,9 @@ controlRecipes();
 // add handlers
 init();
 
+// (async () => {
+//   const carts = await loadCarts();
+//   console.log(carts);
+// })();
 // // console.log(loadCarts());
-// const carts = loadCarts()
-//   .then(data => data)
-//   .then(carts => console.log(carts));
+// loadCarts().then(recipes => console.log(recipes));

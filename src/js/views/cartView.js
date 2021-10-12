@@ -5,16 +5,19 @@ class cartView {
 
   constructor() {}
 
-  renderCarts(recipe) {
-    if (!recipe) return;
-    this._parent.insertAdjacentHTML('afterbegin', this._createCart(recipe));
+  renderCarts(recipes) {
+    if (recipes.length === 0) return;
+    this.clear();
+    recipes.forEach(recipe => {
+      this._parent.insertAdjacentHTML('afterbegin', this._createCart(recipe));
+    });
     this.addHandlerRemove();
-    this.addHandlerAmount(recipe);
+    this.addHandlerAmount();
     this.totalSalary();
   }
   _createCart(recipe) {
     return `
-    <li class="cart-item" id="recipe_${recipe.id}">
+    <li class="cart-item">
       <div class="row">
         <div class="col-8 cart-content">
           <h3>${recipe.name}</h3>
@@ -55,17 +58,19 @@ class cartView {
     const orderNowBtn = this._modal.querySelector('#orderNow');
     orderNowBtn.addEventListener('click', handler);
   }
-  addHandlerAmount(recipe) {
-    const amountInput = document.querySelector(`#recipe_${recipe.id} .amount`);
-    amountInput.addEventListener('input', e => {
-      let value = Number(e.target.value);
-      const btn = e.target;
-      if (!value || value < 1) {
-        btn.value = '1';
-      } else {
-        btn.value = Math.round(value);
-      }
-      this.totalSalary();
+  addHandlerAmount() {
+    const amountInputs = this._parent.querySelectorAll(`.row .amount`);
+    amountInputs.forEach(input => {
+      input.addEventListener('input', e => {
+        let value = Number(e.target.value);
+        const btn = e.target;
+        if (!value || value < 1) {
+          btn.value = '1';
+        } else {
+          btn.value = Math.round(value);
+        }
+        this.totalSalary();
+      });
     });
   }
 

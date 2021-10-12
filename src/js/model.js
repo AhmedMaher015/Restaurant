@@ -92,19 +92,28 @@ export const loadCategories = async function () {
   }
 };
 
-// export const loadCarts = async function () {
-//   const carts = JSON.parse(localStorage.getItem('cart')) || [];
-//   try {
-//     state.cartlist = await carts.map(async id => {
-//       const recipe = await loadRecipe(id);
-//       return recipe;
-//     });
-//     // state.cartlist = [...carts];
-//     return state.cartlist;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
+export const loadCarts = async function () {
+  const carts = JSON.parse(localStorage.getItem('cart')) || [];
+  if (carts.length === 0) return [];
+  try {
+    const recipes = await Promise.all([...carts.map(id => loadRecipe(id))]);
+    state.cartlist = [...recipes];
+    return state.cartlist;
+  } catch (err) {
+    throw err;
+  }
+};
+export const loadFavorits = async function () {
+  const favorites = JSON.parse(localStorage.getItem('favorite')) || [];
+  if (favorites.length === 0) return [];
+  try {
+    const recipes = await Promise.all([...favorites.map(id => loadRecipe(id))]);
+    state.favoriteList = [...recipes];
+    return state.favoriteList;
+  } catch (err) {
+    throw err;
+  }
+};
 
 export const loadSearchResults = async function (recipeName) {
   try {
@@ -231,17 +240,3 @@ export const deleteEmail = async function () {
     throw err;
   }
 };
-
-// export const loadCarts = async function () {
-//   const cartIds = JSON.parse(localStorage.getItem('cart')) || [];
-
-//   if (!cartIds && cartIds.length === 0) return;
-//   const carts = [];
-//   // render carts
-//   await cartIds.forEach(async id => {
-//     const recipe = await loadRecipe(id);
-//     carts.push(recipe);
-//   });
-
-//   return carts;
-// };

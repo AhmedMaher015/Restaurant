@@ -4,11 +4,15 @@ class favoriteView {
   _favoriteIcon = document.querySelector('.favorite-open');
   constructor() {}
 
-  renderFavorite(recipe) {
-    if (!recipe) return;
-    // recipes.forEach(recipe => this._createCart(recipe));
-    const html = this._createFavorite(recipe);
-    this._parent.insertAdjacentHTML('afterbegin', html);
+  renderFavorite(recipes) {
+    if (!recipes && recipes.length === 0) return;
+    this.clear();
+    recipes.forEach(recipe => {
+      const html = this._createFavorite(recipe);
+      this._parent.insertAdjacentHTML('afterbegin', html);
+    });
+
+    this.addHandlerRemove();
   }
   _createFavorite(recipe) {
     return `
@@ -18,8 +22,10 @@ class favoriteView {
       <div class="row">
         <div class="col-8 cart-content">
           <h3>${recipe.name}  <span style="color: red;">❤️</span></h3>
-         
           <div class="hidden id">${recipe._id}</div>
+          <div class="remove" style="margin: 10px 0px">
+          <button class="btn btn-danger btn-md remove-cart" value="${recipe.id}">Remove</button>
+        </div>
         </div>
         <div class="col-4">
           <img class="pic" src=${recipe.imageCover} />
@@ -37,6 +43,23 @@ class favoriteView {
 
   clear() {
     this._parent.innerHTML = '';
+  }
+  addHandlerRemove() {
+    const cartBtns = this._modal.querySelectorAll('.remove-cart');
+    cartBtns.forEach(btn =>
+      btn.addEventListener('click', e => {
+        this.remove(e);
+      })
+    );
+  }
+
+  remove(e) {
+    const favoriteIds = JSON.parse(localStorage.getItem('favorite')) || [];
+    const favoriteBtn = e.target;
+    const path = e.composedPath();
+    favoriteIds.pop(favoriteBtn.value);
+    localStorage.setItem('favorite', JSON.stringify(favoriteIds));
+    path[4].remove();
   }
 }
 
