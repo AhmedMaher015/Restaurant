@@ -189,6 +189,8 @@ class profileView {
         email: email.value,
         name: name.value,
       });
+
+      this.renderProfile();
     });
   }
 
@@ -207,6 +209,8 @@ class profileView {
         passwordConfirm: passwordConfirm.value,
       });
     });
+
+    this.renderProfile();
   }
 
   addHandlerDeleteEmail(handler) {

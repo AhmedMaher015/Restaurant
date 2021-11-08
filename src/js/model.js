@@ -45,9 +45,8 @@ export const loadRecipes = async function (limit = 9, page = 1) {
     );
     state.recipes = [...data.data.data];
     state.popular = state.recipes.slice(0, 4);
-    const results = data.results;
     const docsCount = data.docsCount;
-    return results < limit ? 0 : docsCount;
+    return docsCount;
   } catch (err) {
     throw err;
   }
@@ -172,14 +171,18 @@ export const loadOrders = async function () {
 export const editProfile = async function (userData) {
   const token = JSON.parse(localStorage.getItem('user')).token;
   try {
-    const data = await helpers.getJson(`${config.API_URL_USER}updateMe`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
+    const data = await helpers
+      .getJson(`${config.API_URL_USER}updateMe`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+      .catch(err => {
+        throw err;
+      });
     const user = data.user;
     state.profile = {
       name: user.name,
@@ -198,17 +201,18 @@ export const editProfile = async function (userData) {
 export const changeProfilePassword = async function (userData) {
   const token = JSON.parse(localStorage.getItem('user')).token;
   try {
-    const data = await helpers.getJson(
-      `${config.API_URL_USER}updateMyPassword`,
-      {
+    const data = await helpers
+      .getJson(`${config.API_URL_USER}updateMyPassword`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
-      }
-    );
+      })
+      .catch(err => {
+        throw err;
+      });
 
     const user = data.data.user;
     state.profile = {

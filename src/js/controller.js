@@ -183,6 +183,7 @@ const controlProfile = function () {
     console.error(err);
     profileView.renderEditProfileError(err.message);
   }
+
   try {
     // change password
     profileView.addHandlerChangePassword(changeProfilePassword);
