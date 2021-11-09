@@ -32,6 +32,7 @@ import orderView from './views/orderView.js';
 import orderResultView from './views/orderResultView.js';
 import ordersView from './views/ordersView.js';
 import orderCancelView from './views/orderCancelView.js';
+import downloadAppView from './views/downloadAppView';
 // import { async } from 'regenerator-runtime/runtime';
 
 const LIMIT = 6;
@@ -290,6 +291,8 @@ const init = function () {
   orderView.addHandler(controlOrder);
   // add handler to orders btn click
   ordersView.addHandler(controlOrders);
+  // add handler to download app
+  downloadAppView.makeHandler();
 };
 
 // check if user logged
