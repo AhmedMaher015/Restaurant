@@ -6,7 +6,7 @@ class paginationView {
     if (restRecipes === 0) return;
     const btnsNumber = Math.ceil(restRecipes / recipesPerPage);
     for (let i = 1; i <= btnsNumber; i++) {
-      const btn = `<button  value="${i}">${i}</button>`;
+      const btn = `<button class="btn btn-premier" value="${i}">${i}</button>`;
       this._parent.insertAdjacentHTML('beforeend', btn);
     }
   }
